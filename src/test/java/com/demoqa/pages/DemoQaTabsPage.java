@@ -19,11 +19,11 @@ public class DemoQaTabsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabsContainer", "Tabs navigation container", By.id("tabsContainer"));
-        register("tabWhat", "What tab link", By.id("demo-tab-what"));
-        register("tabOrigin", "Origin tab link", By.id("demo-tab-origin"));
-        register("tabUse", "Use tab link", By.id("demo-tab-use"));
-        register("tabMore", "More tab link (disabled)", By.id("demo-tab-more"));
+        register("tabsContainer", "Tabs navigation container", By.id("invalid_tabs_container_9999"));
+        register("tabWhat", "What tab link", By.id("invalid_demo_tab_what_8888"));
+        register("tabOrigin", "Origin tab link", By.id("invalid_demo_tab_origin_7777"));
+        register("tabUse", "Use tab link", By.id("invalid_demo_tab_use_6666"));
+        register("tabMore", "More tab link (disabled)", By.id("invalid_demo_tab_more_5555"));
 
         tabs = initComponent(TabsComponent.class, getElement("tabsContainer"));
     }

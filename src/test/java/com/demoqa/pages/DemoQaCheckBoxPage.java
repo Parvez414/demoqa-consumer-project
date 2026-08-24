@@ -16,7 +16,7 @@ public class DemoQaCheckBoxPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("resultContainer", "Checkbox selection result display container", By.id("result"));
+        register("resultContainer", "Checkbox selection result display container", By.id("invalid_checkbox_result_container_9999"));
     }
 
     public void expandAllNodes() {

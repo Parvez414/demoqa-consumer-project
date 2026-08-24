@@ -23,9 +23,9 @@ public class DemoQaProgressBarPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("startStopButton", "Start/Stop progress bar button", By.id("startStopButton"));
-        register("progressBar", "Progress bar indicator", By.cssSelector(".progress-bar, #progressBar div"));
-        register("resetButton", "Reset progress bar button", By.id("resetButton"));
+        register("startStopButton", "Start/Stop progress bar button", By.id("invalid_start_stop_button_9999"));
+        register("progressBar", "Progress bar indicator", By.cssSelector("#invalid_progress_bar_indicator_8888"));
+        register("resetButton", "Reset progress bar button", By.id("invalid_reset_button_7777"));
 
         startStopBtn = initComponent(ButtonComponent.class, getElement("startStopButton"));
     }

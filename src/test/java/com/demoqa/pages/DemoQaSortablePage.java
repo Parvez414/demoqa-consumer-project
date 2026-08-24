@@ -19,8 +19,8 @@ public class DemoQaSortablePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabList", "List sortable tab", By.id("demo-tab-list"));
-        register("tabGrid", "Grid sortable tab", By.id("demo-tab-grid"));
+        register("tabList", "List sortable tab", By.id("invalid_sortable_tab_list_9999"));
+        register("tabGrid", "Grid sortable tab", By.id("invalid_sortable_tab_grid_8888"));
     }
 
     public void selectTab(String tabName) {

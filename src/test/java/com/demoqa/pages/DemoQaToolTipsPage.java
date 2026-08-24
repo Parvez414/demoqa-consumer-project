@@ -18,9 +18,9 @@ public class DemoQaToolTipsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("toolTipButton", "Hover to see tooltip button", By.id("toolTipButton"));
-        register("toolTipTextField", "Hover to see tooltip textfield", By.id("toolTipTextField"));
-        register("tooltipInner", "Tooltip popover inner text container", By.cssSelector(".tooltip-inner, div[role='tooltip']"));
+        register("toolTipButton", "Hover to see tooltip button", By.id("invalid_tool_tip_button_9999"));
+        register("toolTipTextField", "Hover to see tooltip textfield", By.id("invalid_tool_tip_text_field_8888"));
+        register("tooltipInner", "Tooltip popover inner text container", By.cssSelector(".invalid-tooltip-inner-7777"));
     }
 
     public void hoverOverButton() {

@@ -18,10 +18,10 @@ public class DemoQaResizablePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("restrictedBox", "Restricted resizable box container", By.id("resizableBoxWithRestriction"));
-        register("restrictedHandle", "Restricted resizable handle", By.cssSelector("#resizableBoxWithRestriction .react-resizable-handle"));
-        register("unrestrictedBox", "Unrestricted resizable box container", By.id("resizable"));
-        register("unrestrictedHandle", "Unrestricted resizable handle", By.cssSelector("#resizable .react-resizable-handle"));
+        register("restrictedBox", "Restricted resizable box container", By.id("invalid_restricted_box_9999"));
+        register("restrictedHandle", "Restricted resizable handle", By.cssSelector("#invalid_restricted_handle_8888"));
+        register("unrestrictedBox", "Unrestricted resizable box container", By.id("invalid_unrestricted_box_7777"));
+        register("unrestrictedHandle", "Unrestricted resizable handle", By.cssSelector("#invalid_unrestricted_handle_6666"));
     }
 
     public void resizeRestrictedBox(int xOffset, int yOffset) {

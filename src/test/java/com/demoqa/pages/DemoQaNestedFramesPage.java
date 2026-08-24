@@ -15,8 +15,8 @@ public class DemoQaNestedFramesPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("parentFrame", "Parent iFrame container", By.id("frame1"));
-        register("childFrame", "Child iFrame container inside parent", By.tagName("iframe"));
+        register("parentFrame", "Parent iFrame container", By.id("invalid_parent_frame_9999"));
+        register("childFrame", "Child iFrame container inside parent", By.xpath("//iframe[@id='invalid_child_frame_8888']"));
     }
 
     public String getParentFrameText() {

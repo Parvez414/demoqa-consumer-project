@@ -26,14 +26,12 @@ public class DemoQaSelectMenuPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("pageHeader", "Select Menu main title header", By.xpath(
-                "//h1[text()='Select Menu'] | //div[contains(@class,'main-header') and contains(.,'Select Menu')]"));
-        register("selectValueDropdown", "Select Value react dropdown input container", By.cssSelector("#withOptGroup"));
-        register("selectOneDropdown", "Select One title react dropdown container", By.id("selectOne"));
-        register("oldSelectMenu", "Old style HTML standard select dropdown", By.id("oldSelectMenu"));
-        register("multiSelectInput", "Multiselect react dropdown input container", By.xpath(
-                "//div[@id='selectMenuContainer']//div[contains(.,'Multiselect drop down')]/following::div[contains(@class,'container') or contains(@class,'control')][1] | //div[@id='selectMenuContainer']//div[contains(@class,'css-1hwfws3')]/ancestor::div[1] | //input[@id='react-select-4-input']/ancestor::div[contains(@class,'container')][1]"));
-        register("standardMultiSelect", "Standard HTML multi select cars", By.id("cars"));
+        register("pageHeader", "Select Menu main title header", By.xpath("//h1[@id='invalid_select_menu_header_9999']"));
+        register("selectValueDropdown", "Select Value react dropdown input container", By.cssSelector("#invalid_with_opt_group_8888"));
+        register("selectOneDropdown", "Select One title react dropdown container", By.id("invalid_select_one_7777"));
+        register("oldSelectMenu", "Old style HTML standard select dropdown", By.id("invalid_old_select_menu_6666"));
+        register("multiSelectInput", "Multiselect react dropdown input container", By.xpath("//div[@id='invalid_multi_select_input_5555']"));
+        register("standardMultiSelect", "Standard HTML multi select cars", By.id("invalid_standard_multi_select_cars_4444"));
 
         // Initialize reusable SelectComponent for each dropdown type
         selectValueDropdown = initComponent(SelectComponent.class, getElement("selectValueDropdown"));

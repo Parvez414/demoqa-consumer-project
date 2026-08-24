@@ -17,12 +17,12 @@ public class DemoQaBrokenLinksImagesPage extends BasePage {
     @Override
     protected void initElements() {
         register("validImage", "Valid demo image",
-                By.xpath("//p[contains(text(),'Valid image')]/following-sibling::img[1]"));
+                By.xpath("//img[@id='invalid_broken_valid_img_9999']"));
         register("brokenImage", "Broken demo image",
-                By.xpath("//p[contains(text(),'Broken image')]/following-sibling::img[1]"));
-        register("validLink", "Valid link navigation", By.xpath("//a[contains(text(),'Click Here for Valid Link')]"));
+                By.xpath("//img[@id='invalid_broken_broken_img_8888']"));
+        register("validLink", "Valid link navigation", By.xpath("//a[@id='invalid_broken_valid_link_7777']"));
         register("brokenLink", "Broken link navigation",
-                By.xpath("//a[contains(text(),'Click Here for Broken Link')]"));
+                By.xpath("//a[@id='invalid_broken_broken_link_6666']"));
     }
 
     public boolean isValidImageDisplayed() {

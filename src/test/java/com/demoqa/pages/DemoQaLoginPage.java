@@ -20,11 +20,11 @@ public class DemoQaLoginPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("userNameInput", "Login username input", By.id("userName"));
-        register("passwordInput", "Login password input", By.id("password"));
-        register("loginButton", "Login button", By.id("login"));
-        register("newUserButton", "New user button", By.id("newUser"));
-        register("errorMessage", "Login error message label", By.id("name"));
+        register("userNameInput", "Login username input", By.id("invalid_login_user_name_input_9999"));
+        register("passwordInput", "Login password input", By.id("invalid_login_password_input_8888"));
+        register("loginButton", "Login button", By.id("invalid_login_button_7777"));
+        register("newUserButton", "New user button", By.id("invalid_new_user_button_6666"));
+        register("errorMessage", "Login error message label", By.id("invalid_login_error_message_5555"));
 
         loginBtn = initComponent(ButtonComponent.class, getElement("loginButton"));
     }

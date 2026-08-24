@@ -18,9 +18,9 @@ public class DemoQaDragabblePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabSimple", "Simple draggable tab", By.id("draggableExample-tab-simple"));
-        register("tabAxis", "Axis restricted draggable tab", By.id("draggableExample-tab-axisRestriction"));
-        register("dragBox", "Simple drag box", By.id("dragBox"));
+        register("tabSimple", "Simple draggable tab", By.id("invalid_draggable_tab_simple_9999"));
+        register("tabAxis", "Axis restricted draggable tab", By.id("invalid_draggable_tab_axis_8888"));
+        register("dragBox", "Simple drag box", By.id("invalid_drag_box_7777"));
     }
 
     public void selectTab(String tabName) {

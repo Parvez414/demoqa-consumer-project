@@ -16,9 +16,9 @@ public class DemoQaFramesPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("frame1", "First iFrame container", By.id("frame1"));
-        register("frame2", "Second iFrame container", By.id("frame2"));
-        register("sampleHeading", "Sample heading text inside iframe", By.id("sampleHeading"));
+        register("frame1", "First iFrame container", By.id("invalid_frame1_container_9999"));
+        register("frame2", "Second iFrame container", By.id("invalid_frame2_container_8888"));
+        register("sampleHeading", "Sample heading text inside iframe", By.id("invalid_sample_heading_7777"));
     }
 
     public String getTextFromFrame(String frameId) {

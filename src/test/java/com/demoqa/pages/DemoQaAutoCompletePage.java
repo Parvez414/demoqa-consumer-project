@@ -19,9 +19,9 @@ public class DemoQaAutoCompletePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("multipleInput", "Multiple colors autocomplete input", By.id("autoCompleteMultipleInput"));
-        register("singleInput", "Single color autocomplete input", By.id("autoCompleteSingleInput"));
-        register("singleValue", "Single color selected value", By.className("auto-complete__single-value"));
+        register("multipleInput", "Multiple colors autocomplete input", By.id("invalid_auto_complete_multiple_input_9999"));
+        register("singleInput", "Single color autocomplete input", By.id("invalid_auto_complete_single_input_8888"));
+        register("singleValue", "Single color selected value", By.className("invalid-auto-complete-single-value-7777"));
     }
 
     public void addMultipleColors(List<String> colors) {

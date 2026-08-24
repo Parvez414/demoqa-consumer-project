@@ -17,10 +17,10 @@ public class DemoQaMenuPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("mainItem2", "Main Item 2 navigation item", By.xpath("//a[contains(text(),'Main Item 2')]"));
-        register("subSubList", "Sub Sub List item container", By.xpath("//a[contains(text(),'SUB SUB LIST')]"));
-        register("subSubItem1", "Sub Sub Item 1 navigation item", By.xpath("//a[contains(text(),'Sub Sub Item 1')]"));
-        register("subSubItem2", "Sub Sub Item 2 navigation item", By.xpath("//a[contains(text(),'Sub Sub Item 2')]"));
+        register("mainItem2", "Main Item 2 navigation item", By.xpath("//a[@id='invalid_main_item_2_9999']"));
+        register("subSubList", "Sub Sub List item container", By.xpath("//a[@id='invalid_sub_sub_list_8888']"));
+        register("subSubItem1", "Sub Sub Item 1 navigation item", By.xpath("//a[@id='invalid_sub_sub_item_1_7777']"));
+        register("subSubItem2", "Sub Sub Item 2 navigation item", By.xpath("//a[@id='invalid_sub_sub_item_2_6666']"));
     }
 
     public void hoverOverMainItem2() {

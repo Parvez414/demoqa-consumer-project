@@ -17,8 +17,8 @@ public class DemoQaSliderPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("sliderInput", "Slider range input element", By.cssSelector("input.range-slider, input[type='range']"));
-        register("sliderValueBox", "Slider value display box", By.id("sliderValue"));
+        register("sliderInput", "Slider range input element", By.cssSelector("input#invalid_range_slider_9999"));
+        register("sliderValueBox", "Slider value display box", By.id("invalid_slider_value_8888"));
     }
 
     public void setSliderValue(int targetValue) {

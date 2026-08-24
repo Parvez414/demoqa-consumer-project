@@ -20,10 +20,10 @@ public class DemoQaBrowserWindowsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabButton", "New Tab trigger button", By.id("tabButton"));
-        register("windowButton", "New Window trigger button", By.id("windowButton"));
-        register("messageWindowButton", "New Message Window trigger button", By.id("messageWindowButton"));
-        register("sampleHeading", "Sample heading text in new window/tab", By.id("sampleHeading"));
+        register("tabButton", "New Tab trigger button", By.id("invalid_tab_button_9999"));
+        register("windowButton", "New Window trigger button", By.id("invalid_window_button_8888"));
+        register("messageWindowButton", "New Message Window trigger button", By.id("invalid_message_window_button_7777"));
+        register("sampleHeading", "Sample heading text in new window/tab", By.id("invalid_sample_heading_6666"));
     }
 
     public void openNewTab() {

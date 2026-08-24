@@ -18,9 +18,9 @@ public class DemoQaUploadDownloadPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("downloadButton", "Download file button", By.id("downloadButton"));
-        register("uploadFileInput", "File upload input element", By.id("uploadFile"));
-        register("uploadedFilePath", "Uploaded file result path label", By.id("uploadedFilePath"));
+        register("downloadButton", "Download file button", By.id("invalid_download_button_9999"));
+        register("uploadFileInput", "File upload input element", By.id("invalid_upload_file_8888"));
+        register("uploadedFilePath", "Uploaded file result path label", By.id("invalid_uploaded_file_path_7777"));
     }
 
     public void clickDownloadButton() {

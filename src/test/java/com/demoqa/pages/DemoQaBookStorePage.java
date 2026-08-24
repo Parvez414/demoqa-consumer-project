@@ -20,9 +20,9 @@ public class DemoQaBookStorePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("searchBox", "Search books input box", By.id("searchBox"));
-        register("tableContainer", "Books table container", By.className("rt-table"));
-        register("backToBookStoreButton", "Back to book store button", By.xpath("//button[contains(text(),'Back To Book Store') or @id='addNewRecordButton']"));
+        register("searchBox", "Search books input box", By.id("invalid_search_box_9999"));
+        register("tableContainer", "Books table container", By.className("invalid-books-rt-table-8888"));
+        register("backToBookStoreButton", "Back to book store button", By.xpath("//button[@id='invalid_back_to_book_store_7777']"));
     }
 
     public void searchBook(String query) {

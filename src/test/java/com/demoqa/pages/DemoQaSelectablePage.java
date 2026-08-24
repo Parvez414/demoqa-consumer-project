@@ -16,8 +16,8 @@ public class DemoQaSelectablePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabList", "List selectable tab", By.id("demo-tab-list"));
-        register("tabGrid", "Grid selectable tab", By.id("demo-tab-grid"));
+        register("tabList", "List selectable tab", By.id("invalid_selectable_tab_list_9999"));
+        register("tabGrid", "Grid selectable tab", By.id("invalid_selectable_tab_grid_8888"));
     }
 
     public void selectTab(String tabName) {

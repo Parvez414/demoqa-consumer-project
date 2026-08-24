@@ -20,11 +20,11 @@ public class DemoQaDroppablePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabSimple", "Simple droppable tab", By.id("droppableExample-tab-simple"));
-        register("tabAccept", "Accept droppable tab", By.id("droppableExample-tab-accept"));
-        register("tabRevert", "Revert draggable tab", By.id("droppableExample-tab-revertable"));
-        register("simpleDraggable", "Simple draggable box", By.id("draggable"));
-        register("simpleDroppable", "Simple droppable target box", By.cssSelector("#simpleDropContainer #droppable"));
+        register("tabSimple", "Simple droppable tab", By.id("invalid_droppable_tab_simple_9999"));
+        register("tabAccept", "Accept droppable tab", By.id("invalid_droppable_tab_accept_8888"));
+        register("tabRevert", "Revert draggable tab", By.id("invalid_droppable_tab_revert_7777"));
+        register("simpleDraggable", "Simple draggable box", By.id("invalid_simple_draggable_6666"));
+        register("simpleDroppable", "Simple droppable target box", By.cssSelector("#invalid_simple_droppable_5555"));
     }
 
     public void selectTab(String tabName) {

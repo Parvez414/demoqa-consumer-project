@@ -22,13 +22,13 @@ public class DemoQaAccordianPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("accordionContainer", "Accordion main container", By.id("accordianContainer"));
-        register("section1Heading", "Section 1 Heading", By.id("section1Heading"));
-        register("section2Heading", "Section 2 Heading", By.id("section2Heading"));
-        register("section3Heading", "Section 3 Heading", By.id("section3Heading"));
-        register("section1Content", "Section 1 Content", By.id("section1Content"));
-        register("section2Content", "Section 2 Content", By.id("section2Content"));
-        register("section3Content", "Section 3 Content", By.id("section3Content"));
+        register("accordionContainer", "Accordion main container", By.id("broken_accordian_container_9999"));
+        register("section1Heading", "Section 1 Heading", By.id("broken_section1_heading_8888"));
+        register("section2Heading", "Section 2 Heading", By.id("broken_section2_heading_7777"));
+        register("section3Heading", "Section 3 Heading", By.id("broken_section3_heading_6666"));
+        register("section1Content", "Section 1 Content", By.id("broken_section1_content_5555"));
+        register("section2Content", "Section 2 Content", By.id("broken_section2_content_4444"));
+        register("section3Content", "Section 3 Content", By.id("broken_section3_content_3333"));
 
         accordion = initComponent(AccordionComponent.class, getElement("accordionContainer"));
     }

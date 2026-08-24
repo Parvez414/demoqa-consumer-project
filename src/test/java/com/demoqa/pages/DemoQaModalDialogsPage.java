@@ -23,14 +23,14 @@ public class DemoQaModalDialogsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("showSmallModalBtn", "Small Modal trigger button", By.id("showSmallModal"));
-        register("showLargeModalBtn", "Large Modal trigger button", By.id("showLargeModal"));
-        register("modalContent", "Modal dialog content container", By.className("modal-content"));
-        register("smallModalTitle", "Small Modal title header", By.id("example-modal-sizes-title-sm"));
-        register("largeModalTitle", "Large Modal title header", By.id("example-modal-sizes-title-lg"));
-        register("modalBody", "Modal dialog body text", By.className("modal-body"));
-        register("closeSmallModalBtn", "Close Small Modal button", By.id("closeSmallModal"));
-        register("closeLargeModalBtn", "Close Large Modal button", By.id("closeLargeModal"));
+        register("showSmallModalBtn", "Small Modal trigger button", By.id("invalid_show_small_modal_btn_9999"));
+        register("showLargeModalBtn", "Large Modal trigger button", By.id("invalid_show_large_modal_btn_8888"));
+        register("modalContent", "Modal dialog content container", By.className("invalid-modal-content-container-7777"));
+        register("smallModalTitle", "Small Modal title header", By.id("invalid_small_modal_title_6666"));
+        register("largeModalTitle", "Large Modal title header", By.id("invalid_large_modal_title_5555"));
+        register("modalBody", "Modal dialog body text", By.className("invalid-modal-body-4444"));
+        register("closeSmallModalBtn", "Close Small Modal button", By.id("invalid_close_small_modal_btn_3333"));
+        register("closeLargeModalBtn", "Close Large Modal button", By.id("invalid_close_large_modal_btn_2222"));
 
         smallModalBtn = initComponent(ButtonComponent.class, getElement("showSmallModalBtn"));
         largeModalBtn = initComponent(ButtonComponent.class, getElement("showLargeModalBtn"));

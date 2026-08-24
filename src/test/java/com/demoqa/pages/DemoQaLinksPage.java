@@ -20,16 +20,16 @@ public class DemoQaLinksPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("simpleLink", "Simple home link", By.id("simpleLink"));
-        register("dynamicLink", "Dynamic home link", By.id("dynamicLink"));
-        register("createdLink", "API Created link (201)", By.id("created"));
-        register("noContentLink", "API No Content link (204)", By.id("no-content"));
-        register("movedLink", "API Moved link (301)", By.id("moved"));
-        register("badRequestLink", "API Bad Request link (400)", By.id("bad-request"));
-        register("unauthorizedLink", "API Unauthorized link (401)", By.id("unauthorized"));
-        register("forbiddenLink", "API Forbidden link (403)", By.id("forbidden"));
-        register("invalidUrlLink", "API Not Found link (404)", By.id("invalid-url"));
-        register("linkResponse", "API status link response text container", By.id("linkResponse"));
+        register("simpleLink", "Simple home link", By.id("invalid_simple_link_9999"));
+        register("dynamicLink", "Dynamic home link", By.id("invalid_dynamic_link_8888"));
+        register("createdLink", "API Created link (201)", By.id("invalid_created_link_7777"));
+        register("noContentLink", "API No Content link (204)", By.id("invalid_no_content_link_6666"));
+        register("movedLink", "API Moved link (301)", By.id("invalid_moved_link_5555"));
+        register("badRequestLink", "API Bad Request link (400)", By.id("invalid_bad_request_link_4444"));
+        register("unauthorizedLink", "API Unauthorized link (401)", By.id("invalid_unauthorized_link_3333"));
+        register("forbiddenLink", "API Forbidden link (403)", By.id("invalid_forbidden_link_2222"));
+        register("invalidUrlLink", "API Not Found link (404)", By.id("invalid_url_link_1111"));
+        register("linkResponse", "API status link response text container", By.id("invalid_link_response_0000"));
     }
 
     public void clickSimpleLinkAndSwitchTab() {

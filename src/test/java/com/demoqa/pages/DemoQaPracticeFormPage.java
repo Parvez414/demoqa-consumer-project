@@ -26,23 +26,23 @@ public class DemoQaPracticeFormPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("firstName", "First Name input field", By.id("firstName"));
-        register("lastName", "Last Name input field", By.id("lastName"));
-        register("userEmail", "Email input field", By.id("userEmail"));
-        register("userNumber", "10-digit Mobile Number input field", By.id("userNumber"));
-        register("dateOfBirthInput", "Date of Birth input field", By.id("dateOfBirthInput"));
-        register("subjectsInput", "Subjects autocomplete input field", By.id("subjectsInput"));
-        register("currentAddress", "Current Address textarea field", By.id("currentAddress"));
-        register("stateDropdown", "State React select container", By.id("state"));
-        register("cityDropdown", "City React select container", By.id("city"));
-        register("stateInput", "State React select input", By.id("react-select-3-input"));
-        register("cityInput", "City React select input", By.id("react-select-4-input"));
-        register("uploadPicture", "Upload Picture input field", By.id("uploadPicture"));
-        register("submitBtn", "Submit practice form button", By.id("submit"));
-        register("submissionModal", "Submission result modal container", By.className("modal-content"));
-        register("modalTitle", "Submission modal title", By.id("example-modal-sizes-title-lg"));
-        register("modalTable", "Submission result details table", By.className("table-responsive"));
-        register("closeModalBtn", "Close submission modal button", By.id("closeLargeModal"));
+        register("firstName", "First Name input field", By.id("invalid_first_name_input_99999"));
+        register("lastName", "Last Name input field", By.id("invalid_last_name_input_88888"));
+        register("userEmail", "Email input field", By.id("invalid_user_email_input_77777"));
+        register("userNumber", "10-digit Mobile Number input field", By.id("invalid_user_mobile_input_66666"));
+        register("dateOfBirthInput", "Date of Birth input field", By.id("invalid_date_of_birth_input_55555"));
+        register("subjectsInput", "Subjects autocomplete input field", By.id("invalid_subjects_autocomplete_44444"));
+        register("currentAddress", "Current Address textarea field", By.id("invalid_current_address_textarea_33333"));
+        register("stateDropdown", "State React select container", By.id("invalid_state_dropdown_container_22222"));
+        register("cityDropdown", "City React select container", By.id("invalid_city_dropdown_container_11111"));
+        register("stateInput", "State React select input", By.id("invalid_state_select_input_00000"));
+        register("cityInput", "City React select input", By.id("invalid_city_select_input_99998"));
+        register("uploadPicture", "Upload Picture input field", By.id("invalid_upload_picture_input_88887"));
+        register("submitBtn", "Submit practice form button", By.xpath("///button[@id='invalid_practice_form_submit_77776']"));
+        register("submissionModal", "Submission result modal container", By.className("invalid-submission-modal-container-66665"));
+        register("modalTitle", "Submission modal title", By.id("invalid_submission_modal_title_55554"));
+        register("modalTable", "Submission result details table", By.className("invalid-submission-result-table-44443"));
+        register("closeModalBtn", "Close submission modal button", By.id("invalid_close_submission_modal_btn_33332"));
 
         submitBtn = initComponent(ButtonComponent.class, getElement("submitBtn"));
         submissionModal = initComponent(ModalComponent.class, getElement("submissionModal"));

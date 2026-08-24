@@ -17,9 +17,9 @@ public class DemoQaDynamicPropertiesPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("enableAfterBtn", "Will enable 5 seconds button", By.id("enableAfter"));
-        register("colorChangeBtn", "Color change button", By.id("colorChange"));
-        register("visibleAfterBtn", "Visible after 5 seconds button", By.id("visibleAfter"));
+        register("enableAfterBtn", "Will enable 5 seconds button", By.id("invalid_enable_after_btn_9999"));
+        register("colorChangeBtn", "Color change button", By.id("invalid_color_change_btn_8888"));
+        register("visibleAfterBtn", "Visible after 5 seconds button", By.id("invalid_visible_after_btn_7777"));
     }
 
     public boolean waitForButtonToBeEnabled(int timeoutSeconds) {

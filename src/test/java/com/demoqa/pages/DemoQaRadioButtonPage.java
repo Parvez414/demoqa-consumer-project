@@ -15,10 +15,10 @@ public class DemoQaRadioButtonPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("yesRadioLabel", "Yes radio button option label", By.xpath("//label[@for='yesRadio']"));
-        register("impressiveRadioLabel", "Impressive radio button option label", By.xpath("//label[@for='impressiveRadio']"));
-        register("noRadioInput", "No radio button input (disabled)", By.id("noRadio"));
-        register("resultSuccess", "Selected radio button result text", By.className("text-success"));
+        register("yesRadioLabel", "Yes radio button option label", By.xpath("//label[@for='invalid_yes_radio_9999']"));
+        register("impressiveRadioLabel", "Impressive radio button option label", By.xpath("//label[@for='invalid_impressive_radio_8888']"));
+        register("noRadioInput", "No radio button input (disabled)", By.id("invalid_no_radio_input_7777"));
+        register("resultSuccess", "Selected radio button result text", By.className("invalid-radio-result-success-6666"));
     }
 
     public void selectYesRadio() {

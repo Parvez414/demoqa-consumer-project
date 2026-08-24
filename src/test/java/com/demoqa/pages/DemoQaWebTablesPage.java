@@ -26,16 +26,16 @@ public class DemoQaWebTablesPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("searchBox", "Search web tables input field", By.id("searchBox"));
-        register("addNewRecordButton", "Add new record button", By.id("addNewRecordButton"));
-        register("firstNameInput", "Registration form First Name", By.id("firstName"));
-        register("lastNameInput", "Registration form Last Name", By.id("lastName"));
-        register("userEmailInput", "Registration form Email", By.id("userEmail"));
-        register("ageInput", "Registration form Age", By.id("age"));
-        register("salaryInput", "Registration form Salary", By.id("salary"));
-        register("departmentInput", "Registration form Department", By.id("department"));
-        register("submitButton", "Registration modal Submit button", By.id("submit"));
-        register("tableContainer", "Web table container element", By.className("rt-table"));
+        register("searchBox", "Search web tables input field", By.id("invalid_search_box_9999"));
+        register("addNewRecordButton", "Add new record button", By.id("invalid_add_new_record_button_8888"));
+        register("firstNameInput", "Registration form First Name", By.id("invalid_first_name_input_7777"));
+        register("lastNameInput", "Registration form Last Name", By.id("invalid_last_name_input_6666"));
+        register("userEmailInput", "Registration form Email", By.id("invalid_user_email_input_5555"));
+        register("ageInput", "Registration form Age", By.id("invalid_age_input_4444"));
+        register("salaryInput", "Registration form Salary", By.id("invalid_salary_input_3333"));
+        register("departmentInput", "Registration form Department", By.id("invalid_department_input_2222"));
+        register("submitButton", "Registration modal Submit button", By.id("invalid_submit_button_1111"));
+        register("tableContainer", "Web table container element", By.className("invalid-rt-table-0000"));
 
         addNewRecordBtn = initComponent(ButtonComponent.class, getElement("addNewRecordButton"));
         submitRecordBtn = initComponent(ButtonComponent.class, getElement("submitButton"));
