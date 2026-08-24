@@ -1,0 +1,45 @@
+{
+  "validUser": {
+    "fullName": "Sarah Jenkins",
+    "email": "sarah.jenkins@testmail.com",
+    "currentAddress": "123 Innovation Way, Suite 400, Austin, TX",
+    "permanentAddress": "789 Evergreen Terrace, Springfield, OR"
+  },
+  "newEmployee": {
+    "firstName": "Alexander",
+    "lastName": "Wright",
+    "email": "alex.wright@corporate.org",
+    "age": "32",
+    "salary": "95000",
+    "department": "Quality Engineering"
+  },
+  "updatedEmployee": {
+    "salary": "120000",
+    "department": "Architecture & AI"
+  },
+  "studentRegistration": {
+    "firstName": "Emily",
+    "lastName": "Davis",
+    "email": "emily.davis@university.edu",
+    "gender": "Female",
+    "mobileNumber": "9876543210",
+    "day": "15",
+    "month": "July",
+    "year": "1998",
+    "subjects": ["Maths", "Computer Science"],
+    "hobbies": ["Sports", "Reading", "Music"],
+    "currentAddress": "456 Academy Blvd, Cambridge, MA",
+    "state": "NCR",
+    "city": "Delhi"
+  },
+  "bookSearch": {
+    "query": "Git Pocket Guide",
+    "expectedTitle": "Git Pocket Guide",
+    "expectedAuthor": "Richard E. Silverman",
+    "expectedPublisher": "O'Reilly Media"
+  },
+  "invalidLogin": {
+    "username": "invalidQAUser",
+    "password": "WrongPassword!123"
+  }
+}

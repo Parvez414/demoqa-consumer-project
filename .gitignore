@@ -1,0 +1,104 @@
+# ==========================================
+# Maven Build & Artifacts
+# ==========================================
+target/
+*.class
+*.war
+*.ear
+*.nar
+*.rar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ==========================================
+# Test Automation Logs, Reports & Execution Outputs
+# ==========================================
+logs/
+*.log
+test-output/
+screenshots/
+allure-results/
+allure-report/
+cucumber-reports/
+reports/
+report/
+ExtentReports/
+ai-dashboard/
+element-healing-history.json
+
+# ==========================================
+# IDE & Code Editor Configurations
+# ==========================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+.metadata/
+bin/
+
+# Visual Studio Code
+.vscode/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+
+# ==========================================
+# Operating System & Temp Files
+# ==========================================
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Linux & Editor Temporary Files
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+
+# ==========================================
+# JVM Crash Dumps
+# ==========================================
+hs_err_pid*
+replay_pid*
+
+# ==========================================
+# Secrets & Environment Configuration
+# ==========================================
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+credentials.json

@@ -1,0 +1,36 @@
+package com.demoqa.pages;
+
+import com.automation.driver.DriverManager;
+import com.automation.pages.BasePage;
+import com.automation.utils.ElementActions;
+import com.automation.utils.Log;
+import com.automation.utils.WaitUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+public class DemoQaFramesPage extends BasePage {
+
+    public DemoQaFramesPage() {
+        super("DemoQaFramesPage");
+    }
+
+    @Override
+    protected void initElements() {
+        register("frame1", "First iFrame container", By.id("frame1"));
+        register("frame2", "Second iFrame container", By.id("frame2"));
+    }
+
+    public String getTextFromFrame(String frameId) {
+        Log.info("Switching to iframe: " + frameId);
+        DriverManager.getDriver().switchTo().defaultContent();
+        WebElement iframe = DriverManager.getDriver().findElement(By.id(frameId));
+        DriverManager.getDriver().switchTo().frame(iframe);
+
+        WebElement heading = WaitUtils.waitForVisibility(By.id("sampleHeading"), 10);
+        String text = heading.getText().trim();
+
+        DriverManager.getDriver().switchTo().defaultContent();
+        ElementActions.pause(200);
+        return text;
+    }
+}
