@@ -35,8 +35,14 @@ public class DemoQaPracticeFormPage extends BasePage {
         register("currentAddress", "Current Address textarea field", By.id("currentAddress"));
         register("stateDropdown", "State React select container", By.id("state"));
         register("cityDropdown", "City React select container", By.id("city"));
+        register("stateInput", "State React select input", By.id("react-select-3-input"));
+        register("cityInput", "City React select input", By.id("react-select-4-input"));
+        register("uploadPicture", "Upload Picture input field", By.id("uploadPicture"));
         register("submitBtn", "Submit practice form button", By.id("submit"));
         register("submissionModal", "Submission result modal container", By.className("modal-content"));
+        register("modalTitle", "Submission modal title", By.id("example-modal-sizes-title-lg"));
+        register("modalTable", "Submission result details table", By.className("table-responsive"));
+        register("closeModalBtn", "Close submission modal button", By.id("closeLargeModal"));
 
         submitBtn = initComponent(ButtonComponent.class, getElement("submitBtn"));
         submissionModal = initComponent(ModalComponent.class, getElement("submissionModal"));
@@ -58,8 +64,12 @@ public class DemoQaPracticeFormPage extends BasePage {
 
     public void setDateOfBirth(String day, String month, String year) {
         Log.info("Setting Date of Birth: " + day + " " + month + " " + year);
-        WebElement dobInput = DriverManager.getDriver().findElement(By.id("dateOfBirthInput"));
-        JavaScriptUtils.clickElement(dobInput);
+        try {
+            click(getElement("dateOfBirthInput"));
+        } catch (Exception e) {
+            WebElement dobInput = DriverManager.getDriver().findElement(By.id("dateOfBirthInput"));
+            JavaScriptUtils.clickElement(dobInput);
+        }
         ElementActions.pause(200);
 
         // Select Month
@@ -79,9 +89,9 @@ public class DemoQaPracticeFormPage extends BasePage {
 
     public void addSubjects(List<String> subjects) {
         Log.info("Adding subjects: " + subjects);
-        WebElement input = DriverManager.getDriver().findElement(By.id("subjectsInput"));
+        WebElement input = waitForVisibility(getElement("subjectsInput"));
         for (String subject : subjects) {
-            input.sendKeys(subject);
+            sendKeys(getElement("subjectsInput"), subject);
             ElementActions.pause(300);
             input.sendKeys(Keys.ENTER);
             ElementActions.pause(200);
@@ -102,8 +112,12 @@ public class DemoQaPracticeFormPage extends BasePage {
         Log.info("Uploading picture: " + filePath);
         File f = new File(filePath);
         if (f.exists()) {
-            WebElement uploadInput = DriverManager.getDriver().findElement(By.id("uploadPicture"));
-            uploadInput.sendKeys(f.getAbsolutePath());
+            try {
+                sendKeys(getElement("uploadPicture"), f.getAbsolutePath());
+            } catch (Exception e) {
+                WebElement uploadInput = DriverManager.getDriver().findElement(By.id("uploadPicture"));
+                uploadInput.sendKeys(f.getAbsolutePath());
+            }
             ElementActions.pause(200);
         }
     }
@@ -112,44 +126,74 @@ public class DemoQaPracticeFormPage extends BasePage {
         Log.info("Filling address [" + address + "], state [" + state + "], city [" + city + "]");
         sendKeys(getElement("currentAddress"), address);
 
-        WebElement stateInput = DriverManager.getDriver().findElement(By.id("react-select-3-input"));
-        stateInput.sendKeys(state);
-        ElementActions.pause(300);
-        stateInput.sendKeys(Keys.ENTER);
+        try {
+            WebElement stateInput = waitForVisibility(getElement("stateInput"));
+            sendKeys(getElement("stateInput"), state);
+            ElementActions.pause(300);
+            stateInput.sendKeys(Keys.ENTER);
+        } catch (Exception e) {
+            WebElement stateInput = DriverManager.getDriver().findElement(By.id("react-select-3-input"));
+            stateInput.sendKeys(state);
+            ElementActions.pause(300);
+            stateInput.sendKeys(Keys.ENTER);
+        }
 
         ElementActions.pause(300);
-        WebElement cityInput = DriverManager.getDriver().findElement(By.id("react-select-4-input"));
-        cityInput.sendKeys(city);
-        ElementActions.pause(300);
-        cityInput.sendKeys(Keys.ENTER);
+        try {
+            WebElement cityInput = waitForVisibility(getElement("cityInput"));
+            sendKeys(getElement("cityInput"), city);
+            ElementActions.pause(300);
+            cityInput.sendKeys(Keys.ENTER);
+        } catch (Exception e) {
+            WebElement cityInput = DriverManager.getDriver().findElement(By.id("react-select-4-input"));
+            cityInput.sendKeys(city);
+            ElementActions.pause(300);
+            cityInput.sendKeys(Keys.ENTER);
+        }
     }
 
     public void submitForm() {
         Log.info("Submitting Practice Form");
-        WebElement submit = DriverManager.getDriver().findElement(By.id("submit"));
-        JavaScriptUtils.scrollIntoView(submit);
-        JavaScriptUtils.clickElement(submit);
+        try {
+            click(getElement("submitBtn"));
+        } catch (Exception e) {
+            WebElement submit = DriverManager.getDriver().findElement(By.id("submit"));
+            JavaScriptUtils.scrollIntoView(submit);
+            JavaScriptUtils.clickElement(submit);
+        }
         ElementActions.pause(600);
     }
 
     public String getModalTitle() {
-        WebElement title = WaitUtils.waitForVisibility(By.id("example-modal-sizes-title-lg"), 10);
-        return title.getText().trim();
+        try {
+            return getText(getElement("modalTitle")).trim();
+        } catch (Exception e) {
+            WebElement title = WaitUtils.waitForVisibility(By.id("example-modal-sizes-title-lg"), 10);
+            return title.getText().trim();
+        }
     }
 
     public String getModalTableData() {
         try {
-            WebElement table = DriverManager.getDriver().findElement(By.className("table-responsive"));
-            return table.getText().trim();
+            return getText(getElement("modalTable")).trim();
         } catch (Exception e) {
-            return "";
+            try {
+                WebElement table = DriverManager.getDriver().findElement(By.className("table-responsive"));
+                return table.getText().trim();
+            } catch (Exception ignored) {
+                return "";
+            }
         }
     }
 
     public void closeModal() {
         Log.info("Closing submission modal");
-        WebElement close = DriverManager.getDriver().findElement(By.id("closeLargeModal"));
-        JavaScriptUtils.clickElement(close);
+        try {
+            click(getElement("closeModalBtn"));
+        } catch (Exception e) {
+            WebElement close = DriverManager.getDriver().findElement(By.id("closeLargeModal"));
+            JavaScriptUtils.clickElement(close);
+        }
         ElementActions.pause(400);
     }
 }

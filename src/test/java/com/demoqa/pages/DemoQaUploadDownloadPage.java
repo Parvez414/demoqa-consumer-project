@@ -25,24 +25,31 @@ public class DemoQaUploadDownloadPage extends BasePage {
 
     public void clickDownloadButton() {
         Log.info("Clicking Download Button");
-        WebElement btn = DriverManager.getDriver().findElement(By.id("downloadButton"));
-        JavaScriptUtils.scrollIntoView(btn);
-        JavaScriptUtils.clickElement(btn);
+        try {
+            click(getElement("downloadButton"));
+        } catch (Exception e) {
+            WebElement btn = DriverManager.getDriver().findElement(By.id("downloadButton"));
+            JavaScriptUtils.scrollIntoView(btn);
+            JavaScriptUtils.clickElement(btn);
+        }
         ElementActions.pause(500);
     }
 
     public void uploadFile(String absoluteOrRelativePath) {
         Log.info("Uploading file: " + absoluteOrRelativePath);
         File file = new File(absoluteOrRelativePath);
-        WebElement input = DriverManager.getDriver().findElement(By.id("uploadFile"));
-        input.sendKeys(file.getAbsolutePath());
+        try {
+            sendKeys(getElement("uploadFileInput"), file.getAbsolutePath());
+        } catch (Exception e) {
+            WebElement input = DriverManager.getDriver().findElement(By.id("uploadFile"));
+            input.sendKeys(file.getAbsolutePath());
+        }
         ElementActions.pause(400);
     }
 
     public String getUploadedFilePathText() {
         try {
-            WebElement pathEl = DriverManager.getDriver().findElement(By.id("uploadedFilePath"));
-            return pathEl.getText().trim();
+            return getText(getElement("uploadedFilePath")).trim();
         } catch (Exception e) {
             return "";
         }

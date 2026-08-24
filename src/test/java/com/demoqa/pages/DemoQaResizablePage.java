@@ -26,7 +26,12 @@ public class DemoQaResizablePage extends BasePage {
 
     public void resizeRestrictedBox(int xOffset, int yOffset) {
         Log.info("Resizing restricted box by offset (" + xOffset + ", " + yOffset + ")");
-        WebElement handle = DriverManager.getDriver().findElement(By.cssSelector("#resizableBoxWithRestriction .react-resizable-handle"));
+        WebElement handle;
+        try {
+            handle = waitForVisibility(getElement("restrictedHandle"), 5);
+        } catch (Exception e) {
+            handle = DriverManager.getDriver().findElement(By.cssSelector("#resizableBoxWithRestriction .react-resizable-handle"));
+        }
         JavaScriptUtils.scrollIntoView(handle);
         Actions actions = new Actions(DriverManager.getDriver());
         actions.clickAndHold(handle).moveByOffset(xOffset, yOffset).release().perform();
@@ -34,7 +39,12 @@ public class DemoQaResizablePage extends BasePage {
     }
 
     public Dimension getRestrictedBoxSize() {
-        WebElement box = DriverManager.getDriver().findElement(By.id("resizableBoxWithRestriction"));
-        return box.getSize();
+        try {
+            WebElement box = waitForVisibility(getElement("restrictedBox"), 5);
+            return box.getSize();
+        } catch (Exception e) {
+            WebElement box = DriverManager.getDriver().findElement(By.id("resizableBoxWithRestriction"));
+            return box.getSize();
+        }
     }
 }

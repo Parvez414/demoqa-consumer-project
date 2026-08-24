@@ -30,15 +30,26 @@ public class DemoQaTabsPage extends BasePage {
 
     public void selectTab(String tabName) {
         Log.info("Selecting Tab: [" + tabName + "]");
-        String tabId = switch (tabName.toLowerCase()) {
-            case "what" -> "demo-tab-what";
-            case "origin" -> "demo-tab-origin";
-            case "use" -> "demo-tab-use";
-            case "more" -> "demo-tab-more";
-            default -> "demo-tab-what";
+        String elementName = switch (tabName.toLowerCase()) {
+            case "what" -> "tabWhat";
+            case "origin" -> "tabOrigin";
+            case "use" -> "tabUse";
+            case "more" -> "tabMore";
+            default -> "tabWhat";
         };
-        WebElement tab = DriverManager.getDriver().findElement(By.id(tabId));
-        JavaScriptUtils.clickElement(tab);
+        try {
+            click(getElement(elementName));
+        } catch (Exception e) {
+            String tabId = switch (tabName.toLowerCase()) {
+                case "what" -> "demo-tab-what";
+                case "origin" -> "demo-tab-origin";
+                case "use" -> "demo-tab-use";
+                case "more" -> "demo-tab-more";
+                default -> "demo-tab-what";
+            };
+            WebElement tab = DriverManager.getDriver().findElement(By.id(tabId));
+            JavaScriptUtils.clickElement(tab);
+        }
         ElementActions.pause(300);
     }
 
@@ -54,9 +65,16 @@ public class DemoQaTabsPage extends BasePage {
     }
 
     public boolean isMoreTabDisabled() {
-        WebElement moreTab = DriverManager.getDriver().findElement(By.id("demo-tab-more"));
-        String classes = moreTab.getAttribute("class");
-        String ariaDisabled = moreTab.getAttribute("aria-disabled");
-        return (classes != null && classes.contains("disabled")) || "true".equalsIgnoreCase(ariaDisabled);
+        try {
+            WebElement moreTab = waitForVisibility(getElement("tabMore"), 5);
+            String classes = moreTab.getAttribute("class");
+            String ariaDisabled = moreTab.getAttribute("aria-disabled");
+            return (classes != null && classes.contains("disabled")) || "true".equalsIgnoreCase(ariaDisabled);
+        } catch (Exception e) {
+            WebElement moreTab = DriverManager.getDriver().findElement(By.id("demo-tab-more"));
+            String classes = moreTab.getAttribute("class");
+            String ariaDisabled = moreTab.getAttribute("aria-disabled");
+            return (classes != null && classes.contains("disabled")) || "true".equalsIgnoreCase(ariaDisabled);
+        }
     }
 }

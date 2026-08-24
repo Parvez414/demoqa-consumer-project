@@ -21,13 +21,14 @@ public class DemoQaAutoCompletePage extends BasePage {
     protected void initElements() {
         register("multipleInput", "Multiple colors autocomplete input", By.id("autoCompleteMultipleInput"));
         register("singleInput", "Single color autocomplete input", By.id("autoCompleteSingleInput"));
+        register("singleValue", "Single color selected value", By.className("auto-complete__single-value"));
     }
 
     public void addMultipleColors(List<String> colors) {
         Log.info("Adding multiple colors: " + colors);
-        WebElement input = DriverManager.getDriver().findElement(By.id("autoCompleteMultipleInput"));
+        WebElement input = waitForVisibility(getElement("multipleInput"));
         for (String c : colors) {
-            input.sendKeys(c);
+            sendKeys(getElement("multipleInput"), c);
             ElementActions.pause(300);
             input.sendKeys(Keys.ENTER);
             ElementActions.pause(200);
@@ -50,8 +51,8 @@ public class DemoQaAutoCompletePage extends BasePage {
 
     public void selectSingleColor(String color) {
         Log.info("Selecting single color: " + color);
-        WebElement input = DriverManager.getDriver().findElement(By.id("autoCompleteSingleInput"));
-        input.sendKeys(color);
+        WebElement input = waitForVisibility(getElement("singleInput"));
+        sendKeys(getElement("singleInput"), color);
         ElementActions.pause(300);
         input.sendKeys(Keys.ENTER);
         ElementActions.pause(200);
@@ -59,8 +60,7 @@ public class DemoQaAutoCompletePage extends BasePage {
 
     public String getSelectedSingleColor() {
         try {
-            WebElement val = DriverManager.getDriver().findElement(By.className("auto-complete__single-value"));
-            return val.getText().trim();
+            return getText(getElement("singleValue")).trim();
         } catch (Exception e) {
             return "";
         }

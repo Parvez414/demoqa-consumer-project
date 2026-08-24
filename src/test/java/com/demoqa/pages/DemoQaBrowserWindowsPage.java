@@ -23,19 +23,28 @@ public class DemoQaBrowserWindowsPage extends BasePage {
         register("tabButton", "New Tab trigger button", By.id("tabButton"));
         register("windowButton", "New Window trigger button", By.id("windowButton"));
         register("messageWindowButton", "New Message Window trigger button", By.id("messageWindowButton"));
+        register("sampleHeading", "Sample heading text in new window/tab", By.id("sampleHeading"));
     }
 
     public void openNewTab() {
         Log.info("Clicking New Tab button");
-        WebElement btn = DriverManager.getDriver().findElement(By.id("tabButton"));
-        JavaScriptUtils.clickElement(btn);
+        try {
+            click(getElement("tabButton"));
+        } catch (Exception e) {
+            WebElement btn = DriverManager.getDriver().findElement(By.id("tabButton"));
+            JavaScriptUtils.clickElement(btn);
+        }
         ElementActions.pause(500);
     }
 
     public void openNewWindow() {
         Log.info("Clicking New Window button");
-        WebElement btn = DriverManager.getDriver().findElement(By.id("windowButton"));
-        JavaScriptUtils.clickElement(btn);
+        try {
+            click(getElement("windowButton"));
+        } catch (Exception e) {
+            WebElement btn = DriverManager.getDriver().findElement(By.id("windowButton"));
+            JavaScriptUtils.clickElement(btn);
+        }
         ElementActions.pause(500);
     }
 
@@ -48,8 +57,13 @@ public class DemoQaBrowserWindowsPage extends BasePage {
                 break;
             }
         }
-        WebElement heading = WaitUtils.waitForVisibility(By.id("sampleHeading"), 10);
-        String text = heading.getText().trim();
+        String text;
+        try {
+            text = getText(getElement("sampleHeading")).trim();
+        } catch (Exception e) {
+            WebElement heading = WaitUtils.waitForVisibility(By.id("sampleHeading"), 10);
+            text = heading.getText().trim();
+        }
         DriverManager.getDriver().close();
         DriverManager.getDriver().switchTo().window(parent);
         return text;

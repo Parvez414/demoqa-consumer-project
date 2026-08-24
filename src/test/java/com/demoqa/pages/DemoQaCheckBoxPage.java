@@ -81,6 +81,12 @@ public class DemoQaCheckBoxPage extends BasePage {
 
     public String getResultText() {
         try {
+            String text = getText(getElement("resultContainer"));
+            if (text != null && !text.isBlank()) {
+                return text.trim();
+            }
+        } catch (Exception ignored) {}
+        try {
             By by = By.id("result");
             WebElement res = WaitUtils.waitForPresence(by, 8);
             return res.getText().trim();

@@ -25,9 +25,14 @@ public class DemoQaSortablePage extends BasePage {
 
     public void selectTab(String tabName) {
         Log.info("Selecting sortable tab: " + tabName);
-        String id = "grid".equalsIgnoreCase(tabName) ? "demo-tab-grid" : "demo-tab-list";
-        WebElement tab = DriverManager.getDriver().findElement(By.id(id));
-        JavaScriptUtils.clickElement(tab);
+        String elementName = "grid".equalsIgnoreCase(tabName) ? "tabGrid" : "tabList";
+        try {
+            click(getElement(elementName));
+        } catch (Exception e) {
+            String id = "grid".equalsIgnoreCase(tabName) ? "demo-tab-grid" : "demo-tab-list";
+            WebElement tab = DriverManager.getDriver().findElement(By.id(id));
+            JavaScriptUtils.clickElement(tab);
+        }
         ElementActions.pause(300);
     }
 

@@ -22,14 +22,15 @@ public class DemoQaBookStorePage extends BasePage {
     protected void initElements() {
         register("searchBox", "Search books input box", By.id("searchBox"));
         register("tableContainer", "Books table container", By.className("rt-table"));
+        register("backToBookStoreButton", "Back to book store button", By.xpath("//button[contains(text(),'Back To Book Store') or @id='addNewRecordButton']"));
     }
 
     public void searchBook(String query) {
         Log.info("Searching Book Store for: [" + query + "]");
-        WebElement search = WaitUtils.waitForVisibility(By.id("searchBox"), 10);
+        WebElement search = waitForVisibility(getElement("searchBox"), 10);
         search.click();
         search.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        search.sendKeys(query);
+        sendKeys(getElement("searchBox"), query);
         ElementActions.pause(500);
     }
 
@@ -58,9 +59,13 @@ public class DemoQaBookStorePage extends BasePage {
 
     public void clickBackToBookStore() {
         Log.info("Clicking Back To Book Store button");
-        WebElement btn = DriverManager.getDriver().findElement(By.xpath("//button[contains(text(),'Back To Book Store') or @id='addNewRecordButton']"));
-        JavaScriptUtils.scrollIntoView(btn);
-        JavaScriptUtils.clickElement(btn);
+        try {
+            click(getElement("backToBookStoreButton"));
+        } catch (Exception e) {
+            WebElement btn = DriverManager.getDriver().findElement(By.xpath("//button[contains(text(),'Back To Book Store') or @id='addNewRecordButton']"));
+            JavaScriptUtils.scrollIntoView(btn);
+            JavaScriptUtils.clickElement(btn);
+        }
         ElementActions.pause(500);
     }
 }

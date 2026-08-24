@@ -25,7 +25,7 @@ public class DemoQaMenuPage extends BasePage {
 
     public void hoverOverMainItem2() {
         Log.info("Hovering over Main Item 2");
-        WebElement el = WaitUtils.waitForVisibility(By.xpath("//a[contains(text(),'Main Item 2')]"), 10);
+        WebElement el = waitForVisibility(getElement("mainItem2"), 10);
         Actions actions = new Actions(DriverManager.getDriver());
         actions.moveToElement(el).perform();
         ElementActions.pause(300);
@@ -33,13 +33,22 @@ public class DemoQaMenuPage extends BasePage {
 
     public void hoverOverSubSubList() {
         Log.info("Hovering over SUB SUB LIST");
-        WebElement el = WaitUtils.waitForVisibility(By.xpath("//a[contains(text(),'SUB SUB LIST')]"), 10);
+        WebElement el = waitForVisibility(getElement("subSubList"), 10);
         Actions actions = new Actions(DriverManager.getDriver());
         actions.moveToElement(el).perform();
         ElementActions.pause(300);
     }
 
     public boolean isSubSubItemVisible(String subItemText) {
+        if ("Sub Sub Item 1".equalsIgnoreCase(subItemText)) {
+            try {
+                return isDisplayed(getElement("subSubItem1"));
+            } catch (Exception ignored) {}
+        } else if ("Sub Sub Item 2".equalsIgnoreCase(subItemText)) {
+            try {
+                return isDisplayed(getElement("subSubItem2"));
+            } catch (Exception ignored) {}
+        }
         WebElement el = WaitUtils.waitForVisibility(By.xpath("//a[contains(text(),'" + subItemText + "')]"), 5);
         return el != null && el.isDisplayed();
     }

@@ -23,7 +23,12 @@ public class DemoQaSliderPage extends BasePage {
 
     public void setSliderValue(int targetValue) {
         Log.info("Setting slider value to: " + targetValue);
-        WebElement slider = DriverManager.getDriver().findElement(By.cssSelector("input.range-slider, input[type='range']"));
+        WebElement slider;
+        try {
+            slider = waitForVisibility(getElement("sliderInput"), 5);
+        } catch (Exception e) {
+            slider = DriverManager.getDriver().findElement(By.cssSelector("input.range-slider, input[type='range']"));
+        }
         int current = Integer.parseInt(slider.getAttribute("value"));
         int diff = targetValue - current;
 
@@ -44,7 +49,12 @@ public class DemoQaSliderPage extends BasePage {
     }
 
     public String getSliderValue() {
-        WebElement box = DriverManager.getDriver().findElement(By.id("sliderValue"));
-        return box.getAttribute("value");
+        try {
+            WebElement box = waitForVisibility(getElement("sliderValueBox"), 5);
+            return box.getAttribute("value");
+        } catch (Exception e) {
+            WebElement box = DriverManager.getDriver().findElement(By.id("sliderValue"));
+            return box.getAttribute("value");
+        }
     }
 }

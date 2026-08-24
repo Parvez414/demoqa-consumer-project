@@ -13,7 +13,8 @@ public class DemoQaBrokenHealingPage extends BasePage {
 
     @Override
     protected void initElements() {
-        // Intentionally broken locators to verify AI Core SDK healing across different applications
+        // Intentionally broken locators to verify AI Core SDK healing across different
+        // applications
         register("brokenUserName", "Full Name text input field", By.id("invalid_broken_user_name_99999"));
         register("brokenSubmitBtn", "Submit form button", By.xpath("///button[@id='invalid_submit_btn']"));
         register("brokenOldSelect", "Old style HTML select dropdown", By.cssSelector("#brokenOldSelectMenu123"));

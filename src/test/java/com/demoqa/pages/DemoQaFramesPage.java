@@ -18,16 +18,27 @@ public class DemoQaFramesPage extends BasePage {
     protected void initElements() {
         register("frame1", "First iFrame container", By.id("frame1"));
         register("frame2", "Second iFrame container", By.id("frame2"));
+        register("sampleHeading", "Sample heading text inside iframe", By.id("sampleHeading"));
     }
 
     public String getTextFromFrame(String frameId) {
         Log.info("Switching to iframe: " + frameId);
         DriverManager.getDriver().switchTo().defaultContent();
-        WebElement iframe = DriverManager.getDriver().findElement(By.id(frameId));
+        WebElement iframe;
+        try {
+            iframe = waitForVisibility(getElement(frameId), 10);
+        } catch (Exception e) {
+            iframe = DriverManager.getDriver().findElement(By.id(frameId));
+        }
         DriverManager.getDriver().switchTo().frame(iframe);
 
-        WebElement heading = WaitUtils.waitForVisibility(By.id("sampleHeading"), 10);
-        String text = heading.getText().trim();
+        String text;
+        try {
+            text = getText(getElement("sampleHeading")).trim();
+        } catch (Exception e) {
+            WebElement heading = WaitUtils.waitForVisibility(By.id("sampleHeading"), 10);
+            text = heading.getText().trim();
+        }
 
         DriverManager.getDriver().switchTo().defaultContent();
         ElementActions.pause(200);

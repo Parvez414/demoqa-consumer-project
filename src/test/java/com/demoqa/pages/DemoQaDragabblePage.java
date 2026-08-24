@@ -25,20 +25,25 @@ public class DemoQaDragabblePage extends BasePage {
 
     public void selectTab(String tabName) {
         Log.info("Selecting draggable tab: " + tabName);
-        String id = "axis".equalsIgnoreCase(tabName) ? "draggableExample-tab-axisRestriction" : "draggableExample-tab-simple";
-        WebElement tab = DriverManager.getDriver().findElement(By.id(id));
-        JavaScriptUtils.clickElement(tab);
+        String elementName = "axis".equalsIgnoreCase(tabName) ? "tabAxis" : "tabSimple";
+        try {
+            click(getElement(elementName));
+        } catch (Exception e) {
+            String id = "axis".equalsIgnoreCase(tabName) ? "draggableExample-tab-axisRestriction" : "draggableExample-tab-simple";
+            WebElement tab = DriverManager.getDriver().findElement(By.id(id));
+            JavaScriptUtils.clickElement(tab);
+        }
         ElementActions.pause(300);
     }
 
     public Point getDragBoxLocation() {
-        WebElement box = DriverManager.getDriver().findElement(By.id("dragBox"));
+        WebElement box = waitForVisibility(getElement("dragBox"));
         return box.getLocation();
     }
 
     public void dragBoxByOffset(int xOffset, int yOffset) {
         Log.info("Dragging dragBox by (" + xOffset + ", " + yOffset + ")");
-        WebElement box = DriverManager.getDriver().findElement(By.id("dragBox"));
+        WebElement box = waitForVisibility(getElement("dragBox"));
         Actions actions = new Actions(DriverManager.getDriver());
         actions.dragAndDropBy(box, xOffset, yOffset).perform();
         ElementActions.pause(300);

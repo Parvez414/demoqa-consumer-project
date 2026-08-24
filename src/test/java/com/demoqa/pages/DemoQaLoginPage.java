@@ -33,14 +33,22 @@ public class DemoQaLoginPage extends BasePage {
         Log.info("Attempting login with username: " + username);
         sendKeys(getElement("userNameInput"), username);
         sendKeys(getElement("passwordInput"), password);
-        WebElement btn = DriverManager.getDriver().findElement(By.id("login"));
-        JavaScriptUtils.scrollIntoView(btn);
-        JavaScriptUtils.clickElement(btn);
+        try {
+            click(getElement("loginButton"));
+        } catch (Exception e) {
+            WebElement btn = DriverManager.getDriver().findElement(By.id("login"));
+            JavaScriptUtils.scrollIntoView(btn);
+            JavaScriptUtils.clickElement(btn);
+        }
         ElementActions.pause(500);
     }
 
     public String getErrorMessageText() {
-        WebElement msg = WaitUtils.waitForVisibility(By.id("name"), 10);
-        return msg.getText().trim();
+        try {
+            return getText(getElement("errorMessage")).trim();
+        } catch (Exception e) {
+            WebElement msg = WaitUtils.waitForVisibility(By.id("name"), 10);
+            return msg.getText().trim();
+        }
     }
 }

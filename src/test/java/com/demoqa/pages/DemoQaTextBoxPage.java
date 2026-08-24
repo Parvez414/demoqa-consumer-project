@@ -43,7 +43,11 @@ public class DemoQaTextBoxPage extends BasePage {
     }
 
     public String getOutputText() {
-        WebElement output = DriverManager.getDriver().findElement(By.id("output"));
-        return output.getText();
+        try {
+            return getText(getElement("outputCard"));
+        } catch (Exception e) {
+            WebElement output = DriverManager.getDriver().findElement(By.id("output"));
+            return output.getText();
+        }
     }
 }

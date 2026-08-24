@@ -7,7 +7,6 @@ import com.automation.utils.ElementActions;
 import com.automation.utils.Log;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -65,8 +64,7 @@ public class DemoQaAlertsPage extends BasePage {
     }
 
     public String getConfirmResultText() {
-        WebElement el = DriverManager.getDriver().findElement(getElement("confirmResult").getCurrentBy());
-        return el.getText().trim();
+        return getText(getElement("confirmResult")).trim();
     }
 
     public void triggerPromptAlertAndEnterText(String inputText) {
@@ -88,7 +86,6 @@ public class DemoQaAlertsPage extends BasePage {
     }
 
     public String getPromptResultText() {
-        WebElement el = DriverManager.getDriver().findElement(getElement("promptResult").getCurrentBy());
-        return el.getText().trim();
+        return getText(getElement("promptResult")).trim();
     }
 }

@@ -4,7 +4,6 @@ import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
 import com.automation.utils.Log;
-import com.automation.utils.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -27,7 +26,7 @@ public class DemoQaButtonsPage extends BasePage {
 
     public void performDoubleClick() {
         Log.info("Performing double click on doubleClickBtn");
-        WebElement btn = WaitUtils.waitForVisibility(getElement("doubleClickBtn").getCurrentBy(), 10);
+        WebElement btn = waitForVisibility(getElement("doubleClickBtn"), 10);
         Actions actions = new Actions(DriverManager.getDriver());
         actions.doubleClick(btn).perform();
         ElementActions.pause(200);
@@ -35,7 +34,7 @@ public class DemoQaButtonsPage extends BasePage {
 
     public void performRightClick() {
         Log.info("Performing right click (context click) on rightClickBtn");
-        WebElement btn = WaitUtils.waitForVisibility(getElement("rightClickBtn").getCurrentBy(), 10);
+        WebElement btn = waitForVisibility(getElement("rightClickBtn"), 10);
         Actions actions = new Actions(DriverManager.getDriver());
         actions.contextClick(btn).perform();
         ElementActions.pause(200);
@@ -48,14 +47,14 @@ public class DemoQaButtonsPage extends BasePage {
     }
 
     public String getDoubleClickMessage() {
-        return DriverManager.getDriver().findElement(By.id("doubleClickMessage")).getText().trim();
+        return getText(getElement("doubleClickMsg")).trim();
     }
 
     public String getRightClickMessage() {
-        return DriverManager.getDriver().findElement(By.id("rightClickMessage")).getText().trim();
+        return getText(getElement("rightClickMsg")).trim();
     }
 
     public String getDynamicClickMessage() {
-        return DriverManager.getDriver().findElement(By.id("dynamicClickMessage")).getText().trim();
+        return getText(getElement("dynamicClickMsg")).trim();
     }
 }

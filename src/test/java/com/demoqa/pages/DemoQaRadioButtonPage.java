@@ -34,7 +34,11 @@ public class DemoQaRadioButtonPage extends BasePage {
     }
 
     public String getSelectedResultText() {
-        WebElement res = DriverManager.getDriver().findElement(By.className("text-success"));
-        return res.getText().trim();
+        try {
+            return getText(getElement("resultSuccess")).trim();
+        } catch (Exception e) {
+            WebElement res = DriverManager.getDriver().findElement(By.className("text-success"));
+            return res.getText().trim();
+        }
     }
 }

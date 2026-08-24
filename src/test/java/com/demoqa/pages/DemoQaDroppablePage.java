@@ -23,24 +23,35 @@ public class DemoQaDroppablePage extends BasePage {
         register("tabSimple", "Simple droppable tab", By.id("droppableExample-tab-simple"));
         register("tabAccept", "Accept droppable tab", By.id("droppableExample-tab-accept"));
         register("tabRevert", "Revert draggable tab", By.id("droppableExample-tab-revertable"));
+        register("simpleDraggable", "Simple draggable box", By.id("draggable"));
+        register("simpleDroppable", "Simple droppable target box", By.cssSelector("#simpleDropContainer #droppable"));
     }
 
     public void selectTab(String tabName) {
         Log.info("Selecting droppable tab: " + tabName);
-        String id = switch (tabName.toLowerCase()) {
-            case "accept" -> "droppableExample-tab-accept";
-            case "revert", "revertable" -> "droppableExample-tab-revertable";
-            default -> "droppableExample-tab-simple";
+        String elementName = switch (tabName.toLowerCase()) {
+            case "accept" -> "tabAccept";
+            case "revert", "revertable" -> "tabRevert";
+            default -> "tabSimple";
         };
-        WebElement tab = DriverManager.getDriver().findElement(By.id(id));
-        JavaScriptUtils.clickElement(tab);
+        try {
+            click(getElement(elementName));
+        } catch (Exception e) {
+            String id = switch (tabName.toLowerCase()) {
+                case "accept" -> "droppableExample-tab-accept";
+                case "revert", "revertable" -> "droppableExample-tab-revertable";
+                default -> "droppableExample-tab-simple";
+            };
+            WebElement tab = DriverManager.getDriver().findElement(By.id(id));
+            JavaScriptUtils.clickElement(tab);
+        }
         ElementActions.pause(300);
     }
 
     public void dragAndDropSimple() {
         Log.info("Performing simple drag and drop");
-        WebElement drag = DriverManager.getDriver().findElement(By.id("draggable"));
-        WebElement drop = DriverManager.getDriver().findElement(By.cssSelector("#simpleDropContainer #droppable"));
+        WebElement drag = waitForVisibility(getElement("simpleDraggable"));
+        WebElement drop = waitForVisibility(getElement("simpleDroppable"));
         JavaScriptUtils.scrollIntoView(drag);
         
         Actions actions = new Actions(DriverManager.getDriver());
@@ -66,6 +77,12 @@ public class DemoQaDroppablePage extends BasePage {
     }
 
     public String getSimpleDropText() {
+        try {
+            String text = getText(getElement("simpleDroppable"));
+            if (text != null && !text.isBlank()) {
+                return text.trim();
+            }
+        } catch (Exception ignored) {}
         WebElement drop = DriverManager.getDriver().findElement(By.cssSelector("#simpleDropContainer #droppable p, #simpleDropContainer #droppable"));
         return drop.getText().trim();
     }

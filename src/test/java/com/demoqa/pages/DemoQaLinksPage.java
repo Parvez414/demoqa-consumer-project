@@ -35,8 +35,12 @@ public class DemoQaLinksPage extends BasePage {
     public void clickSimpleLinkAndSwitchTab() {
         Log.info("Clicking simple link");
         String originalWindow = DriverManager.getDriver().getWindowHandle();
-        WebElement link = DriverManager.getDriver().findElement(By.id("simpleLink"));
-        JavaScriptUtils.clickElement(link);
+        try {
+            click(getElement("simpleLink"));
+        } catch (Exception e) {
+            WebElement link = DriverManager.getDriver().findElement(By.id("simpleLink"));
+            JavaScriptUtils.clickElement(link);
+        }
         ElementActions.pause(500);
 
         List<String> windows = new ArrayList<>(DriverManager.getDriver().getWindowHandles());
@@ -50,24 +54,42 @@ public class DemoQaLinksPage extends BasePage {
 
     public void clickApiLink(String linkType) {
         Log.info("Clicking API link: " + linkType);
-        String id = switch (linkType.toLowerCase()) {
-            case "created" -> "created";
-            case "nocontent", "no content", "no-content" -> "no-content";
-            case "moved" -> "moved";
-            case "badrequest", "bad request", "bad-request" -> "bad-request";
-            case "unauthorized" -> "unauthorized";
-            case "forbidden" -> "forbidden";
-            case "notfound", "not found", "invalid-url" -> "invalid-url";
-            default -> "created";
+        String elementKey = switch (linkType.toLowerCase()) {
+            case "created" -> "createdLink";
+            case "nocontent", "no content", "no-content" -> "noContentLink";
+            case "moved" -> "movedLink";
+            case "badrequest", "bad request", "bad-request" -> "badRequestLink";
+            case "unauthorized" -> "unauthorizedLink";
+            case "forbidden" -> "forbiddenLink";
+            case "notfound", "not found", "invalid-url" -> "invalidUrlLink";
+            default -> "createdLink";
         };
-        WebElement link = DriverManager.getDriver().findElement(By.id(id));
-        JavaScriptUtils.scrollIntoView(link);
-        JavaScriptUtils.clickElement(link);
+        try {
+            click(getElement(elementKey));
+        } catch (Exception e) {
+            String id = switch (linkType.toLowerCase()) {
+                case "created" -> "created";
+                case "nocontent", "no content", "no-content" -> "no-content";
+                case "moved" -> "moved";
+                case "badrequest", "bad request", "bad-request" -> "bad-request";
+                case "unauthorized" -> "unauthorized";
+                case "forbidden" -> "forbidden";
+                case "notfound", "not found", "invalid-url" -> "invalid-url";
+                default -> "created";
+            };
+            WebElement link = DriverManager.getDriver().findElement(By.id(id));
+            JavaScriptUtils.scrollIntoView(link);
+            JavaScriptUtils.clickElement(link);
+        }
         ElementActions.pause(600);
     }
 
     public String getLinkResponseText() {
-        WebElement resp = WaitUtils.waitForVisibility(By.id("linkResponse"), 10);
-        return resp.getText().trim();
+        try {
+            return getText(getElement("linkResponse")).trim();
+        } catch (Exception e) {
+            WebElement resp = WaitUtils.waitForVisibility(By.id("linkResponse"), 10);
+            return resp.getText().trim();
+        }
     }
 }

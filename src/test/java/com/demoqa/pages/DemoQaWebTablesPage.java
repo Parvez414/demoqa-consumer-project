@@ -43,16 +43,26 @@ public class DemoQaWebTablesPage extends BasePage {
 
     public void searchTable(String query) {
         Log.info("Searching Web Table for: [" + query + "]");
-        WebElement search = com.automation.utils.WaitUtils.waitForVisibility(getElement("searchBox").getCurrentBy(), 10);
+        WebElement search;
+        try {
+            search = waitForVisibility(getElement("searchBox"), 10);
+        } catch (Exception e) {
+            search = com.automation.utils.WaitUtils.waitForVisibility(getElement("searchBox").getCurrentBy(), 10);
+        }
         search.click();
         search.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        search.sendKeys(query);
+        sendKeys(getElement("searchBox"), query);
         ElementActions.pause(600);
     }
 
     public void clickAddNewRecord() {
         Log.info("Clicking Add New Record button");
-        click(getElement("addNewRecordButton"));
+        try {
+            click(getElement("addNewRecordButton"));
+        } catch (Exception e) {
+            WebElement btn = DriverManager.getDriver().findElement(By.id("addNewRecordButton"));
+            JavaScriptUtils.clickElement(btn);
+        }
         ElementActions.pause(400);
     }
 
@@ -65,8 +75,12 @@ public class DemoQaWebTablesPage extends BasePage {
         sendKeys(getElement("salaryInput"), salary);
         sendKeys(getElement("departmentInput"), department);
         
-        WebElement submit = DriverManager.getDriver().findElement(getElement("submitButton").getCurrentBy());
-        JavaScriptUtils.clickElement(submit);
+        try {
+            click(getElement("submitButton"));
+        } catch (Exception e) {
+            WebElement submit = DriverManager.getDriver().findElement(getElement("submitButton").getCurrentBy());
+            JavaScriptUtils.clickElement(submit);
+        }
         ElementActions.pause(800);
     }
 
@@ -90,16 +104,32 @@ public class DemoQaWebTablesPage extends BasePage {
         }
         ElementActions.pause(500);
 
-        WebElement salaryInput = com.automation.utils.WaitUtils.waitForPresence(By.id("salary"), 5);
-        salaryInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        salaryInput.sendKeys(newSalary);
+        try {
+            WebElement salaryInput = waitForVisibility(getElement("salaryInput"), 5);
+            salaryInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+            sendKeys(getElement("salaryInput"), newSalary);
+        } catch (Exception e) {
+            WebElement salaryInput = com.automation.utils.WaitUtils.waitForPresence(By.id("salary"), 5);
+            salaryInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+            salaryInput.sendKeys(newSalary);
+        }
 
-        WebElement deptInput = DriverManager.getDriver().findElement(By.id("department"));
-        deptInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        deptInput.sendKeys(newDept);
+        try {
+            WebElement deptInput = waitForVisibility(getElement("departmentInput"), 5);
+            deptInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+            sendKeys(getElement("departmentInput"), newDept);
+        } catch (Exception e) {
+            WebElement deptInput = DriverManager.getDriver().findElement(By.id("department"));
+            deptInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
+            deptInput.sendKeys(newDept);
+        }
 
-        WebElement submit = DriverManager.getDriver().findElement(By.id("submit"));
-        JavaScriptUtils.clickElement(submit);
+        try {
+            click(getElement("submitButton"));
+        } catch (Exception e) {
+            WebElement submit = DriverManager.getDriver().findElement(By.id("submit"));
+            JavaScriptUtils.clickElement(submit);
+        }
         ElementActions.pause(600);
     }
 

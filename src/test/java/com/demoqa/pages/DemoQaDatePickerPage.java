@@ -1,7 +1,6 @@
 package com.demoqa.pages;
 
 import com.automation.components.DatePickerComponent;
-import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
 import com.automation.utils.Log;
@@ -27,29 +26,29 @@ public class DemoQaDatePickerPage extends BasePage {
 
     public void setSelectDate(String dateString) {
         Log.info("Setting Select Date to: " + dateString);
-        WebElement input = DriverManager.getDriver().findElement(By.id("datePickerMonthYearInput"));
+        WebElement input = waitForVisibility(getElement("selectDateInput"));
         input.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        input.sendKeys(dateString);
+        sendKeys(getElement("selectDateInput"), dateString);
         input.sendKeys(Keys.ENTER);
         ElementActions.pause(300);
     }
 
     public String getSelectDateValue() {
-        WebElement input = DriverManager.getDriver().findElement(By.id("datePickerMonthYearInput"));
+        WebElement input = waitForVisibility(getElement("selectDateInput"));
         return input.getAttribute("value");
     }
 
     public void setDateAndTime(String dateTimeString) {
         Log.info("Setting Date and Time to: " + dateTimeString);
-        WebElement input = DriverManager.getDriver().findElement(By.id("dateAndTimePickerInput"));
+        WebElement input = waitForVisibility(getElement("dateAndTimeInput"));
         input.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-        input.sendKeys(dateTimeString);
+        sendKeys(getElement("dateAndTimeInput"), dateTimeString);
         input.sendKeys(Keys.ENTER);
         ElementActions.pause(300);
     }
 
     public String getDateAndTimeValue() {
-        WebElement input = DriverManager.getDriver().findElement(By.id("dateAndTimePickerInput"));
+        WebElement input = waitForVisibility(getElement("dateAndTimeInput"));
         return input.getAttribute("value");
     }
 }
