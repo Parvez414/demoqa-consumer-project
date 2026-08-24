@@ -8,7 +8,7 @@ A comprehensive standalone BDD test automation project automating **[DemoQA](htt
 1. [Overview & Architecture](#1-overview--architecture)
 2. [Complete Automated Test Suites Matrix](#2-complete-automated-test-suites-matrix)
 3. [Components Demonstrated](#3-components-demonstrated)
-4. [Prerequisites](#4-prerequisites)
+4. [Prerequisites & SDK Installation](#4-prerequisites--sdk-installation)
 5. [Running Tests Locally](#5-running-tests-locally)
 6. [Docker & Containerized Execution](#6-docker--containerized-execution)
 7. [AI Self-Healing & Gemini 3.6 Setup](#7-ai-self-healing--gemini-36-setup)
@@ -115,11 +115,35 @@ modal.close();
 
 ---
 
-## 4. Prerequisites
+## 4. Prerequisites & SDK Installation
+
+### System Requirements
 - **Java JDK**: JDK 17 LTS (`java -version`)
 - **Apache Maven**: 3.8.0+ (`mvn -version`)
-- **Google Chrome** (Desktop browser)
-- **Core SDK Installed**: `mvn clean install -DskipTests` in root repository.
+- **Google Chrome**: Desktop browser (latest version)
+
+### 📦 Install Core SDK JAR into Local Maven Repository
+
+This project depends on the **AI-Powered Automation Framework Core SDK** (`com.automation:ai-automation-framework:1.0.0`). The pre-packaged SDK JAR is provided in the [`core_sdk_jar/`](core_sdk_jar/) directory.
+
+To install this JAR into your local Maven cache (`~/.m2/repository`), run the following command from the project root:
+
+#### On Linux / macOS / Bash:
+```bash
+mvn install:install-file \
+  -Dfile=core_sdk_jar/ai-automation-framework-1.0.0.jar \
+  -DgroupId=com.automation \
+  -DartifactId=ai-automation-framework \
+  -Dversion=1.0.0 \
+  -Dpackaging=jar
+```
+
+#### On Windows (PowerShell / Command Prompt):
+```powershell
+mvn install:install-file "-Dfile=core_sdk_jar/ai-automation-framework-1.0.0.jar" "-DgroupId=com.automation" "-DartifactId=ai-automation-framework" "-Dversion=1.0.0" "-Dpackaging=jar"
+```
+
+Once installed, Maven will resolve all SDK classes, components, driver utilities, and test helpers seamlessly.
 
 ---
 
