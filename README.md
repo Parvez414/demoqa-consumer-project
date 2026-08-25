@@ -11,7 +11,7 @@ A comprehensive standalone BDD test automation project automating **[DemoQA](htt
 4. [Prerequisites & SDK Installation](#4-prerequisites--sdk-installation)
 5. [Running Tests Locally](#5-running-tests-locally)
 6. [Docker & Containerized Execution](#6-docker--containerized-execution)
-7. [AI Self-Healing & Gemini 3.6 Setup](#7-ai-self-healing--gemini-36-setup)
+7. [AI Self-Healing & Multi-Provider Setup](#7-ai-self-healing--multi-provider-setup)
 8. [Centralized Web Dashboard & Offline HTML Reports](#8-centralized-web-dashboard--offline-html-reports)
 9. [Git Auto-Patch & Self-Healing PR Generator](#9-git-auto-patch--self-healing-pr-generator)
 10. [Configuration Properties Reference](#10-configuration-properties-reference)
@@ -188,15 +188,73 @@ docker-compose run --rm demoqa-test-runner "-Dcucumber.filter.tags=@Smoke"
 
 ---
 
-## 7. AI Self-Healing & Gemini 3.6 Setup
+## 7. AI Self-Healing & Multi-Provider Setup
 
-Dual-tier self-healing configuration in `src/test/resources/config/config.properties`:
+The AI-Powered Automation Framework Core SDK features an enterprise-grade **Multi-Provider AI Self-Healing Engine** that dynamically analyzes broken locators, scans DOM attributes, and repairs tests in real time. It supports offline heuristics, cloud AI models, enterprise private endpoints, and on-premise air-gapped LLMs.
+
+### Supported AI Providers & Modes
+
+Configure `ai.healing.provider` in [`src/test/resources/config/config.properties`](src/test/resources/config/config.properties):
+
+| Provider Mode | Description | Key Configuration / Env Variables |
+| :--- | :--- | :--- |
+| **`hybrid`** *(Default)* | Fast offline heuristic first; escalates to active AI LLM provider if needed | Configured AI API key or local LLM |
+| **`heuristic`** | Offline DOM heuristics (0 latency, 0 cost, rule-based) | None (100% offline) |
+| **`gemini`** | Google Gemini LLM with heuristic fallback | `ai.gemini.api.key` / `GEMINI_API_KEY` |
+| **`openai`** | OpenAI models (`gpt-4o`, `gpt-4o-mini`) | `ai.openai.api.key` / `OPENAI_API_KEY` |
+| **`azure_openai`** | Corporate Azure OpenAI private enterprise endpoint | `ai.azure.openai.endpoint`, `ai.azure.openai.api.key` |
+| **`claude`** | Anthropic Claude models (`claude-3-5-haiku`, `claude-3-5-sonnet`) | `ai.claude.api.key` / `ANTHROPIC_API_KEY` |
+| **`ollama`** | Local / Air-Gapped LLM (e.g. `deepseek-r1`, `llama3`, `qwen2.5`) | `ai.ollama.base.url` (e.g. `http://localhost:11434`) |
+| **`auto`** | Auto-detects the first configured and responsive AI provider | Any configured provider |
+
+### Multi-Provider Configuration in `config.properties`
+
 ```properties
+# ------------------------------------------------------------------------------
+# 4. Multi-Provider AI Self-Healing Engine Settings
+# ------------------------------------------------------------------------------
+# Master switch for AI Self-Healing
 ai.healing.enabled=true
-ai.healing.provider=heuristic
+
+# AI Healing Mode / Provider:
+# "hybrid" (default), "heuristic", "gemini", "openai", "azure_openai", "claude", "ollama", "auto"
+ai.healing.provider=hybrid
+
+# Optional failover secondary provider if primary LLM fails (e.g., "ollama", "claude")
+ai.provider.fallback=
+
+# Dynamic runtime healing for elements that break mid-interaction
+ai.runtime.healing.enabled=true
+
+# Minimum confidence threshold (0.50 to 1.00)
 ai.healing.confidence.threshold=0.70
-gemini.api.key=YOUR_API_KEY_HERE
-gemini.model.name=gemini-3.6-flash
+
+# 1. Google Gemini API Settings (or GEMINI_API_KEY environment variable)
+ai.gemini.api.key=
+ai.gemini.model=gemini-3.6-flash
+ai.gemini.temperature=0.1
+ai.gemini.timeout.seconds=30
+
+# 2. OpenAI API Settings (or OPENAI_API_KEY environment variable)
+ai.openai.api.key=
+ai.openai.model=gpt-4o-mini
+ai.openai.timeout.seconds=20
+
+# 3. Azure OpenAI API Settings (or AZURE_OPENAI_KEY environment variable)
+ai.azure.openai.endpoint=
+ai.azure.openai.api.key=
+ai.azure.openai.deployment.name=gpt-4o
+ai.azure.openai.api.version=2024-02-15-preview
+
+# 4. Anthropic Claude API Settings (or ANTHROPIC_API_KEY environment variable)
+ai.claude.api.key=
+ai.claude.model=claude-3-5-haiku-20241022
+ai.claude.timeout.seconds=20
+
+# 5. Local / Air-Gapped Ollama Settings (100% Offline / Zero Cost)
+ai.ollama.base.url=http://localhost:11434
+ai.ollama.model=deepseek-r1:8b
+ai.ollama.timeout.seconds=30
 ```
 
 ---
@@ -207,3 +265,51 @@ gemini.model.name=gemini-3.6-flash
 - **AI Element Healing History**: `target/element-healing-history.json`
 - **Step & Failure Screenshots**: `target/screenshots/`
 - **Allure Interactive Report**: `mvn allure:serve`
+- **Live Telemetry Hub**: Automatically stream test and self-healing telemetry to the Centralized Web Portal (Port `8080`):
+  ```properties
+  ai.telemetry.enabled=true
+  ai.telemetry.url=http://localhost:8080/api/telemetry/report
+  ```
+
+---
+
+## 9. Git Auto-Patch & Self-Healing PR Generator
+
+The SDK includes automated locator patching that can update Java Page Object source files and generate Git branches / PRs for team review:
+
+```properties
+# Automatically patch broken locators in Java Page Object files and create Git branches
+ai.autopatch.enabled=false
+ai.autopatch.auto.branch=true
+ai.autopatch.branch.prefix=ai-heal/patch-
+ai.autopatch.git.commit=true
+ai.autopatch.create.pr=false
+```
+
+---
+
+## 10. Configuration Properties Reference
+
+Comprehensive configuration options available in [`src/test/resources/config/config.properties`](src/test/resources/config/config.properties):
+
+| Category | Property Key | Default / Sample | Description |
+| :--- | :--- | :--- | :--- |
+| **Browser & Execution** | `browser` | `chrome` | Target browser (`chrome`, `firefox`, `edge`) |
+| | `headless` | `true` | Headless execution mode for CI/CD |
+| | `execution.mode` | `local` | `local` or `remote` (Docker / Selenium Grid / Cloud) |
+| | `thread.count` | `3` | Parallel thread execution count |
+| | `environment` | `qa` | Active environment configuration (`dev`, `qa`, `staging`, `prod`) |
+| | `test.retry.count` | `1` | Retry count for flaky scenarios |
+| | `execution.delay.ms` | `300` | Pacing delay between browser actions in ms |
+| **Timeouts** | `timeout.explicit` | `20` | Explicit wait timeout in seconds |
+| | `timeout.pageload` | `60` | Page load timeout in seconds |
+| | `timeout.polling.ms` | `500` | Polling interval in ms |
+| **AI Self-Healing** | `ai.healing.enabled` | `true` | Master switch for AI Self-Healing |
+| | `ai.healing.provider` | `hybrid` | Provider mode: `hybrid`, `heuristic`, `gemini`, `openai`, `azure_openai`, `claude`, `ollama`, `auto` |
+| | `ai.provider.fallback` | *(empty)* | Optional secondary failover provider |
+| | `ai.runtime.healing.enabled` | `true` | Dynamic mid-interaction runtime locator healing |
+| | `ai.healing.confidence.threshold` | `0.70` | Minimum healing confidence threshold (0.50 - 1.00) |
+| **Telemetry & Reporting** | `ai.telemetry.enabled` | `true` | Live telemetry streaming to Web Portal |
+| | `ai.telemetry.url` | `http://localhost:8080/api/telemetry/report` | Centralized telemetry endpoint URL |
+| **Git Auto-Patch** | `ai.autopatch.enabled` | `false` | Automatic Page Object source patching |
+| | `ai.autopatch.auto.branch` | `true` | Create new branch for healed locators |
