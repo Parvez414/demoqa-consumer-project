@@ -50,6 +50,10 @@ public class DemoQaBrowserWindowsPage extends BasePage {
 
     public String switchToChildWindowAndGetHeading() {
         String parent = DriverManager.getDriver().getWindowHandle();
+        try {
+            WaitUtils.waitForCondition(d -> d.getWindowHandles().size() > 1, 10);
+        } catch (Exception ignored) {
+        }
         List<String> windows = new ArrayList<>(DriverManager.getDriver().getWindowHandles());
         for (String w : windows) {
             if (!w.equals(parent)) {

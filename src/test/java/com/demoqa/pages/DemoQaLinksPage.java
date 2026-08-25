@@ -86,10 +86,23 @@ public class DemoQaLinksPage extends BasePage {
 
     public String getLinkResponseText() {
         try {
+            WaitUtils.waitForCondition(d -> {
+                try {
+                    String t = getText(getElement("linkResponse")).trim();
+                    return !t.isEmpty();
+                } catch (Exception e) {
+                    return false;
+                }
+            }, 10);
             return getText(getElement("linkResponse")).trim();
         } catch (Exception e) {
-            WebElement resp = WaitUtils.waitForVisibility(By.id("linkResponse"), 10);
-            return resp.getText().trim();
+            try {
+                WebElement resp = WaitUtils.waitForVisibility(By.id("linkResponse"), 10);
+                WaitUtils.waitForCondition(d -> !resp.getText().trim().isEmpty(), 5);
+                return resp.getText().trim();
+            } catch (Exception ex) {
+                return "";
+            }
         }
     }
 }

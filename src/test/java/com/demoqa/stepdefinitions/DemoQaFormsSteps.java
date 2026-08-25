@@ -27,6 +27,7 @@ public class DemoQaFormsSteps {
         ElementActions.navigateToUrl(url);
         ElementActions.pause(500);
         practiceFormPage = new DemoQaPracticeFormPage();
+        practiceFormPage.validateAndHealPageElements();
     }
 
     @When("I fill and submit the student registration form using profile {string} from JSON")

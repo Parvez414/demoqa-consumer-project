@@ -9,6 +9,7 @@ import com.automation.utils.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import java.util.List;
 
 public class DemoQaToolTipsPage extends BasePage {
 
@@ -27,36 +28,45 @@ public class DemoQaToolTipsPage extends BasePage {
         Log.info("Hovering over toolTipButton");
         WebElement btn;
         try {
-            btn = waitForVisibility(getElement("toolTipButton"), 5);
+            btn = waitForVisibility(getElement("toolTipButton"), 3);
         } catch (Exception e) {
             btn = DriverManager.getDriver().findElement(By.id("toolTipButton"));
         }
         JavaScriptUtils.scrollIntoView(btn);
-        Actions actions = new Actions(DriverManager.getDriver());
-        actions.moveToElement(btn).perform();
-        ElementActions.pause(400);
+        JavaScriptUtils.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', {bubbles: true})); arguments[0].dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));", btn);
+        new Actions(DriverManager.getDriver()).moveToElement(btn).pause(java.time.Duration.ofMillis(300)).perform();
+        ElementActions.pause(300);
     }
 
     public void hoverOverTextField() {
         Log.info("Hovering over toolTipTextField");
         WebElement field;
         try {
-            field = waitForVisibility(getElement("toolTipTextField"), 5);
+            field = waitForVisibility(getElement("toolTipTextField"), 3);
         } catch (Exception e) {
             field = DriverManager.getDriver().findElement(By.id("toolTipTextField"));
         }
         JavaScriptUtils.scrollIntoView(field);
-        Actions actions = new Actions(DriverManager.getDriver());
-        actions.moveToElement(field).perform();
-        ElementActions.pause(400);
+        JavaScriptUtils.executeScript("arguments[0].dispatchEvent(new MouseEvent('mouseover', {bubbles: true})); arguments[0].dispatchEvent(new MouseEvent('mouseenter', {bubbles: true}));", field);
+        new Actions(DriverManager.getDriver()).moveToElement(field).pause(java.time.Duration.ofMillis(300)).perform();
+        ElementActions.pause(300);
     }
 
     public String getTooltipText() {
         try {
-            return getText(getElement("tooltipInner")).trim();
+            return WaitUtils.waitForCondition(driver -> {
+                List<WebElement> list = driver.findElements(By.className("tooltip-inner"));
+                if (!list.isEmpty() && !list.get(0).getText().trim().isEmpty()) {
+                    return list.get(0).getText().trim();
+                }
+                return null;
+            }, 5);
         } catch (Exception e) {
-            WebElement tooltip = WaitUtils.waitForVisibility(By.cssSelector(".tooltip-inner, div[role='tooltip']"), 10);
-            return tooltip.getText().trim();
+            List<WebElement> inners = DriverManager.getDriver().findElements(By.className("tooltip-inner"));
+            if (!inners.isEmpty()) {
+                return inners.get(0).getText().trim();
+            }
+            return "";
         }
     }
 }

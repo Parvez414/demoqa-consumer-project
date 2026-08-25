@@ -25,6 +25,7 @@ public class DemoQaSelectMenuSteps {
         DriverManager.getDriver().get(url);
         ElementActions.pause(1000);
         selectMenuPage = new DemoQaSelectMenuPage();
+        selectMenuPage.validateAndHealPageElements();
         ScreenshotUtils.captureAndSaveCustomScreenshot("DemoQA_Select_Menu_Page_Loaded");
     }
 

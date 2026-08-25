@@ -36,7 +36,7 @@ public class DemoQaFramesPage extends BasePage {
         try {
             text = getText(getElement("sampleHeading")).trim();
         } catch (Exception e) {
-            WebElement heading = WaitUtils.waitForVisibility(By.id("sampleHeading"), 10);
+            WebElement heading = WaitUtils.waitForPresence(By.id("sampleHeading"), 10);
             text = heading.getText().trim();
         }
 
