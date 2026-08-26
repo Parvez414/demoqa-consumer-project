@@ -15,6 +15,8 @@ A comprehensive standalone BDD test automation project automating **[DemoQA](htt
 8. [Centralized Web Dashboard & Offline HTML Reports](#8-centralized-web-dashboard--offline-html-reports)
 9. [Git Auto-Patch & Self-Healing PR Generator](#9-git-auto-patch--self-healing-pr-generator)
 10. [Configuration Properties Reference](#10-configuration-properties-reference)
+11. [Test Data Management (TDM) Engine](#11-test-data-management-tdm-engine)
+12. [Troubleshooting & Frequently Asked Questions (FAQ)](#12-troubleshooting--frequently-asked-questions-faq)
 
 ---
 
@@ -265,10 +267,10 @@ ai.ollama.timeout.seconds=30
 - **AI Element Healing History**: `target/element-healing-history.json`
 - **Step & Failure Screenshots**: `target/screenshots/`
 - **Allure Interactive Report**: `mvn allure:serve`
-- **Live Telemetry Hub**: Automatically stream test and self-healing telemetry to the Centralized Web Portal (Port `8080`):
+- **Live Telemetry Hub**: Automatically stream test and self-healing telemetry to the Centralized Web Portal (Port `8999`):
   ```properties
   ai.telemetry.enabled=true
-  ai.telemetry.url=http://localhost:8080/api/telemetry/report
+  ai.telemetry.url=http://localhost:8999/api/telemetry/report
   ```
 
 ---
@@ -306,10 +308,91 @@ Comprehensive configuration options available in [`src/test/resources/config/con
 | | `timeout.polling.ms` | `500` | Polling interval in ms |
 | **AI Self-Healing** | `ai.healing.enabled` | `true` | Master switch for AI Self-Healing |
 | | `ai.healing.provider` | `hybrid` | Provider mode: `hybrid`, `heuristic`, `gemini`, `openai`, `azure_openai`, `claude`, `ollama`, `auto` |
-| | `ai.provider.fallback` | *(empty)* | Optional secondary failover provider |
+| | `ai.provider.fallback` | `gemini` | Optional secondary failover provider |
 | | `ai.runtime.healing.enabled` | `true` | Dynamic mid-interaction runtime locator healing |
-| | `ai.healing.confidence.threshold` | `0.70` | Minimum healing confidence threshold (0.50 - 1.00) |
+| | `ai.heuristic.escalation.threshold` | `0.70` | Confidence threshold to escalate to LLMs |
 | **Telemetry & Reporting** | `ai.telemetry.enabled` | `true` | Live telemetry streaming to Web Portal |
-| | `ai.telemetry.url` | `http://localhost:8080/api/telemetry/report` | Centralized telemetry endpoint URL |
+| | `ai.telemetry.url` | `http://localhost:8999/api/telemetry/report` | Centralized telemetry endpoint URL |
 | **Git Auto-Patch** | `ai.autopatch.enabled` | `false` | Automatic Page Object source patching |
 | | `ai.autopatch.auto.branch` | `true` | Create new branch for healed locators |
+
+---
+
+## 11. Test Data Management (TDM) Engine
+
+This project uses the Core SDK's zero-boilerplate Test Data Management engine:
+
+### 1. Dynamic JSON Dot-Path Queries (Zero Java Model Classes)
+Query any test dataset located under `src/test/resources/data/*.json` using fluent dot-notation without writing Java POJO/DTO mapping classes:
+```java
+import com.automation.data.TestData;
+import com.automation.data.TestDataManager;
+
+// Load a dataset object
+TestData studentData = TestDataManager.getData("student-registration.standardStudent");
+String firstName = studentData.getString("firstName");
+String email = studentData.getString("email");
+int age = studentData.getInt("age");
+
+// Or query directly with dot-paths
+String state = TestDataManager.getString("student-registration.standardStudent.address.state");
+```
+
+### 2. Dynamic Synthetic Data Generation
+Prevent data duplication and test collision during parallel test runs:
+```java
+import com.automation.data.DataGenerator;
+
+String name = DataGenerator.fullName();          // e.g. "Sophia Vance"
+String email = DataGenerator.uniqueEmail();       // e.g. "user_1724678@example.com"
+String phone = DataGenerator.phoneNumber();       // e.g. "555-019-2834"
+```
+
+### 3. Thread-Safe Scenario Context
+Pass runtime dynamic test data across Cucumber step definitions safely:
+```java
+import com.automation.data.ScenarioContext;
+
+// Store in Step 1
+ScenarioContext.set("STUDENT_NAME", studentName);
+
+// Retrieve in Step 2
+String name = ScenarioContext.getString("STUDENT_NAME");
+```
+
+---
+
+## 12. Troubleshooting & Frequently Asked Questions (FAQ)
+
+### Q1: `NoSuchElementException` occurs and AI self-healing does not trigger.
+* **Resolution**: The SDK only heals elements that are wrapped with `register()` inside a class extending `BasePage`. Ensure your element is registered:
+  ```java
+  public PageElement searchBox = register("searchBox", "Search input field", By.id("search"));
+  ```
+  Also verify that `ai.healing.enabled=true` in `config.properties`.
+
+### Q2: How to handle elements obscured by fixed footer ads or banner overlays in DemoQA?
+* **Resolution**: The Core SDK's `ElementActions.click()` and `BasePage.click()` automatically attempt regular Selenium clicks, catch overlay intercepts, scroll the element into view via JavaScript, and fall back to `JavaScriptUtils.clickElement()` if an obstruction is detected.
+
+### Q3: Why does `iframe` or `nestedframe` element lookup fail?
+* **Resolution**: Always switch into the iframe before locating child elements, and return to default content when finished:
+  ```java
+  getDriver().switchTo().frame("frame1");
+  // Interact with frame elements
+  getDriver().switchTo().defaultContent();
+  ```
+
+### Q4: How do I access Shadow DOM custom elements?
+* **Resolution**: Standard `By.xpath()` cannot cross shadow boundaries. Use `WebComponent`:
+  ```java
+  WebComponent customCard = initComponent(WebComponent.class, By.cssSelector("custom-card"));
+  WebElement shadowBtn = customCard.pierceShadow("button.action-btn");
+  shadowBtn.click();
+  ```
+
+### Q5: How do I test AI self-healing behavior deliberately?
+* **Resolution**: Run the included self-healing feature suite:
+  ```bash
+  mvn test -Dcucumber.filter.tags="@SelfHealing"
+  ```
+  Inspect `target/ai-dashboard/index.html` and `target/element-healing-history.json` to verify the healed selector and confidence score.
