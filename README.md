@@ -42,6 +42,14 @@ All driver management, element waiting, pre-flight validation, and AI healing ar
 </dependencies>
 ```
 
+### 🏛️ Platform Architecture Diagram
+
+![AI-Powered Test Automation Framework Architecture](docs/images/sdk_architecture_diagram.jpg)
+
+### 🔄 Test Execution Lifecycle & AI Self-Healing Flowchart
+
+![Test Execution Lifecycle & AI Self-Healing Flowchart](docs/images/healing_flowchart_diagram.jpg)
+
 ---
 
 ## 2. Complete Automated Test Suites Matrix
