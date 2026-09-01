@@ -18,8 +18,8 @@ public class DemoQaDatePickerPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("selectDateInput", "Select Date input field", By.id("invalid_date_picker_input_9999"));
-        register("dateAndTimeInput", "Date and Time picker input field", By.id("invalid_date_time_picker_input_8888"));
+        register("selectDateInput", "Select Date input field", By.id("datePickerMonthYearInput"));
+        register("dateAndTimeInput", "Date and Time picker input field", By.id("dateAndTimePickerInput"));
 
         datePicker = initComponent(DatePickerComponent.class, getElement("selectDateInput"));
     }

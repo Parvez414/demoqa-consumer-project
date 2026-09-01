@@ -15,19 +15,14 @@ public class DemoQaNestedFramesPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("parentFrame", "Parent iFrame container", By.id("invalid_parent_frame_9999"));
-        register("childFrame", "Child iFrame container inside parent", By.xpath("//iframe[@id='invalid_child_frame_8888']"));
+        register("parentFrame", "Parent iFrame container", By.id("frame1"));
+        register("childFrame", "Child iFrame container inside parent", By.tagName("iframe"));
     }
 
     public String getParentFrameText() {
         Log.info("Switching to Parent Frame");
         DriverManager.getDriver().switchTo().defaultContent();
-        WebElement parent;
-        try {
-            parent = waitForVisibility(getElement("parentFrame"), 10);
-        } catch (Exception e) {
-            parent = DriverManager.getDriver().findElement(By.id("frame1"));
-        }
+        WebElement parent = waitForVisibility(getElement("parentFrame"), 10);
         DriverManager.getDriver().switchTo().frame(parent);
         String text = DriverManager.getDriver().findElement(By.tagName("body")).getText().trim();
         DriverManager.getDriver().switchTo().defaultContent();
@@ -37,20 +32,10 @@ public class DemoQaNestedFramesPage extends BasePage {
     public String getChildIframeText() {
         Log.info("Switching to Child IFrame inside Parent");
         DriverManager.getDriver().switchTo().defaultContent();
-        WebElement parent;
-        try {
-            parent = waitForVisibility(getElement("parentFrame"), 10);
-        } catch (Exception e) {
-            parent = DriverManager.getDriver().findElement(By.id("frame1"));
-        }
+        WebElement parent = waitForVisibility(getElement("parentFrame"), 10);
         DriverManager.getDriver().switchTo().frame(parent);
 
-        WebElement child;
-        try {
-            child = waitForVisibility(getElement("childFrame"), 5);
-        } catch (Exception e) {
-            child = DriverManager.getDriver().findElement(By.tagName("iframe"));
-        }
+        WebElement child = waitForVisibility(getElement("childFrame"), 5);
         DriverManager.getDriver().switchTo().frame(child);
 
         String text = DriverManager.getDriver().findElement(By.tagName("p")).getText().trim();

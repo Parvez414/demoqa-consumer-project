@@ -3,11 +3,10 @@ package com.demoqa.pages;
 import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
-import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
+import com.automation.utils.ResilientActions;
 import com.automation.utils.WaitUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -20,30 +19,26 @@ public class DemoQaBookStorePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("searchBox", "Search books input box", By.id("invalid_search_box_9999"));
-        register("tableContainer", "Books table container", By.className("invalid-books-rt-table-8888"));
-        register("backToBookStoreButton", "Back to book store button", By.xpath("//button[@id='invalid_back_to_book_store_7777']"));
+        register("searchBox", "Search books input box", By.id("searchBox"));
+        register("tableContainer", "Books table container", By.className("rt-table"));
+        register("backToBookStoreButton", "Back to book store button", By.xpath("//button[@id='addNewRecordButton' or contains(text(),'Back To Book Store')]"));
     }
 
     public void searchBook(String query) {
         Log.info("Searching Book Store for: [" + query + "]");
-        WebElement search = waitForVisibility(getElement("searchBox"), 10);
-        search.click();
-        search.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         sendKeys(getElement("searchBox"), query);
         ElementActions.pause(500);
     }
 
     public List<String> getBookTitles() {
         List<WebElement> links = DriverManager.getDriver().findElements(By.xpath("//span[contains(@id,'see-book-')]//a"));
-        return links.stream().map(l -> l.getText().trim()).toList();
+        return links.stream().map(ResilientActions::getText).toList();
     }
 
     public void clickBookByTitle(String title) {
         Log.info("Clicking book title: [" + title + "]");
-        WebElement link = DriverManager.getDriver().findElement(By.xpath("//a[contains(text(),'" + title + "')]"));
-        JavaScriptUtils.scrollIntoView(link);
-        JavaScriptUtils.clickElement(link);
+        By linkBy = By.xpath("//a[contains(text(),'" + title + "')]");
+        ElementActions.click(linkBy);
         ElementActions.pause(500);
     }
 
@@ -59,13 +54,7 @@ public class DemoQaBookStorePage extends BasePage {
 
     public void clickBackToBookStore() {
         Log.info("Clicking Back To Book Store button");
-        try {
-            click(getElement("backToBookStoreButton"));
-        } catch (Exception e) {
-            WebElement btn = DriverManager.getDriver().findElement(By.xpath("//button[contains(text(),'Back To Book Store') or @id='addNewRecordButton']"));
-            JavaScriptUtils.scrollIntoView(btn);
-            JavaScriptUtils.clickElement(btn);
-        }
+        click(getElement("backToBookStoreButton"));
         ElementActions.pause(500);
     }
 }

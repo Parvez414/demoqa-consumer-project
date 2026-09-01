@@ -3,7 +3,6 @@ package com.demoqa.pages;
 import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
-import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -20,11 +19,11 @@ public class DemoQaDroppablePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabSimple", "Simple droppable tab", By.id("invalid_droppable_tab_simple_9999"));
-        register("tabAccept", "Accept droppable tab", By.id("invalid_droppable_tab_accept_8888"));
-        register("tabRevert", "Revert draggable tab", By.id("invalid_droppable_tab_revert_7777"));
-        register("simpleDraggable", "Simple draggable box", By.id("invalid_simple_draggable_6666"));
-        register("simpleDroppable", "Simple droppable target box", By.cssSelector("#invalid_simple_droppable_5555"));
+        register("tabSimple", "Simple droppable tab", By.id("droppableExample-tab-simple"));
+        register("tabAccept", "Accept droppable tab", By.id("droppableExample-tab-accept"));
+        register("tabRevert", "Revert draggable tab", By.id("droppableExample-tab-revertable"));
+        register("simpleDraggable", "Simple draggable box", By.id("draggable"));
+        register("simpleDroppable", "Simple droppable target box", By.cssSelector("#simpleDropContainer #droppable"));
     }
 
     public void selectTab(String tabName) {
@@ -34,17 +33,7 @@ public class DemoQaDroppablePage extends BasePage {
             case "revert", "revertable" -> "tabRevert";
             default -> "tabSimple";
         };
-        try {
-            click(getElement(elementName));
-        } catch (Exception e) {
-            String id = switch (tabName.toLowerCase()) {
-                case "accept" -> "droppableExample-tab-accept";
-                case "revert", "revertable" -> "droppableExample-tab-revertable";
-                default -> "droppableExample-tab-simple";
-            };
-            WebElement tab = DriverManager.getDriver().findElement(By.id(id));
-            JavaScriptUtils.clickElement(tab);
-        }
+        click(getElement(elementName));
         ElementActions.pause(300);
     }
 
@@ -52,7 +41,6 @@ public class DemoQaDroppablePage extends BasePage {
         Log.info("Performing simple drag and drop");
         WebElement drag = waitForVisibility(getElement("simpleDraggable"));
         WebElement drop = waitForVisibility(getElement("simpleDroppable"));
-        JavaScriptUtils.scrollIntoView(drag);
         
         Actions actions = new Actions(DriverManager.getDriver());
         actions.clickAndHold(drag)
@@ -65,7 +53,6 @@ public class DemoQaDroppablePage extends BasePage {
                 .perform();
         ElementActions.pause(500);
 
-        // Fallback simulation if not triggered
         String text = getSimpleDropText();
         if (!"Dropped!".equalsIgnoreCase(text)) {
             JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
@@ -77,13 +64,7 @@ public class DemoQaDroppablePage extends BasePage {
     }
 
     public String getSimpleDropText() {
-        try {
-            String text = getText(getElement("simpleDroppable"));
-            if (text != null && !text.isBlank()) {
-                return text.trim();
-            }
-        } catch (Exception ignored) {}
-        WebElement drop = DriverManager.getDriver().findElement(By.cssSelector("#simpleDropContainer #droppable p, #simpleDropContainer #droppable"));
-        return drop.getText().trim();
+        String text = getText(getElement("simpleDroppable"));
+        return text != null ? text.trim() : "";
     }
 }

@@ -1,11 +1,10 @@
 package com.demoqa.pages;
 
 import com.automation.components.TabsComponent;
-import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
-import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
+import com.automation.utils.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -19,11 +18,11 @@ public class DemoQaTabsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabsContainer", "Tabs navigation container", By.id("invalid_tabs_container_9999"));
-        register("tabWhat", "What tab link", By.id("invalid_demo_tab_what_8888"));
-        register("tabOrigin", "Origin tab link", By.id("invalid_demo_tab_origin_7777"));
-        register("tabUse", "Use tab link", By.id("invalid_demo_tab_use_6666"));
-        register("tabMore", "More tab link (disabled)", By.id("invalid_demo_tab_more_5555"));
+        register("tabsContainer", "Tabs navigation container", By.id("tabsContainer"));
+        register("tabWhat", "What tab link", By.id("demo-tab-what"));
+        register("tabOrigin", "Origin tab link", By.id("demo-tab-origin"));
+        register("tabUse", "Use tab link", By.id("demo-tab-use"));
+        register("tabMore", "More tab link (disabled)", By.id("demo-tab-more"));
 
         tabs = initComponent(TabsComponent.class, getElement("tabsContainer"));
     }
@@ -37,20 +36,18 @@ public class DemoQaTabsPage extends BasePage {
             case "more" -> "tabMore";
             default -> "tabWhat";
         };
-        try {
-            click(getElement(elementName));
-        } catch (Exception e) {
-            String tabId = switch (tabName.toLowerCase()) {
-                case "what" -> "demo-tab-what";
-                case "origin" -> "demo-tab-origin";
-                case "use" -> "demo-tab-use";
-                case "more" -> "demo-tab-more";
-                default -> "demo-tab-what";
-            };
-            WebElement tab = DriverManager.getDriver().findElement(By.id(tabId));
-            JavaScriptUtils.clickElement(tab);
-        }
+        click(getElement(elementName));
         ElementActions.pause(300);
+    }
+
+    public String getActiveTabPaneContent() {
+        try {
+            By by = By.cssSelector(".tab-content .tab-pane.active, .tab-content .tab-pane.show, .tab-pane[aria-hidden='false']");
+            WebElement activePane = WaitUtils.waitForVisibility(by, 5);
+            return activePane.getText().trim();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public String getTabPaneContent(String tabName) {
@@ -60,21 +57,13 @@ public class DemoQaTabsPage extends BasePage {
             case "use" -> "demo-tabpane-use";
             default -> "demo-tabpane-what";
         };
-        WebElement pane = DriverManager.getDriver().findElement(By.id(paneId));
-        return pane.getText().trim();
+        return ElementActions.getText(By.id(paneId)).trim();
     }
 
     public boolean isMoreTabDisabled() {
-        try {
-            WebElement moreTab = waitForVisibility(getElement("tabMore"), 5);
-            String classes = moreTab.getAttribute("class");
-            String ariaDisabled = moreTab.getAttribute("aria-disabled");
-            return (classes != null && classes.contains("disabled")) || "true".equalsIgnoreCase(ariaDisabled);
-        } catch (Exception e) {
-            WebElement moreTab = DriverManager.getDriver().findElement(By.id("demo-tab-more"));
-            String classes = moreTab.getAttribute("class");
-            String ariaDisabled = moreTab.getAttribute("aria-disabled");
-            return (classes != null && classes.contains("disabled")) || "true".equalsIgnoreCase(ariaDisabled);
-        }
+        WebElement moreTab = waitForVisibility(getElement("tabMore"), 5);
+        String classes = moreTab.getAttribute("class");
+        String ariaDisabled = moreTab.getAttribute("aria-disabled");
+        return (classes != null && classes.contains("disabled")) || "true".equalsIgnoreCase(ariaDisabled);
     }
 }

@@ -3,8 +3,8 @@ package com.demoqa.pages;
 import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
-import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
+import com.automation.utils.ResilientActions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -19,20 +19,14 @@ public class DemoQaSortablePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabList", "List sortable tab", By.id("invalid_sortable_tab_list_9999"));
-        register("tabGrid", "Grid sortable tab", By.id("invalid_sortable_tab_grid_8888"));
+        register("tabList", "List sortable tab", By.id("demo-tab-list"));
+        register("tabGrid", "Grid sortable tab", By.id("demo-tab-grid"));
     }
 
     public void selectTab(String tabName) {
         Log.info("Selecting sortable tab: " + tabName);
         String elementName = "grid".equalsIgnoreCase(tabName) ? "tabGrid" : "tabList";
-        try {
-            click(getElement(elementName));
-        } catch (Exception e) {
-            String id = "grid".equalsIgnoreCase(tabName) ? "demo-tab-grid" : "demo-tab-list";
-            WebElement tab = DriverManager.getDriver().findElement(By.id(id));
-            JavaScriptUtils.clickElement(tab);
-        }
+        click(getElement(elementName));
         ElementActions.pause(300);
     }
 
@@ -57,6 +51,6 @@ public class DemoQaSortablePage extends BasePage {
         List<WebElement> items = DriverManager.getDriver().findElements(By.xpath(
                 "//div[@id='demo-tabpane-list']//div[contains(@class,'list-group-item')]"
         ));
-        return items.stream().map(e -> e.getText()).toList();
+        return items.stream().map(ResilientActions::getText).toList();
     }
 }

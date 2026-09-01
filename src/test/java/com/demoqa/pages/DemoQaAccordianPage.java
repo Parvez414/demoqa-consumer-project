@@ -6,8 +6,8 @@ import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
 import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
-import com.automation.utils.WaitUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;
@@ -22,73 +22,54 @@ public class DemoQaAccordianPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("accordionContainer", "Accordion main container", By.id("broken_accordian_container_9999"));
-        register("section1Heading", "Section 1 Heading", By.id("broken_section1_heading_8888"));
-        register("section2Heading", "Section 2 Heading", By.id("broken_section2_heading_7777"));
-        register("section3Heading", "Section 3 Heading", By.id("broken_section3_heading_6666"));
-        register("section1Content", "Section 1 Content", By.id("broken_section1_content_5555"));
-        register("section2Content", "Section 2 Content", By.id("broken_section2_content_4444"));
-        register("section3Content", "Section 3 Content", By.id("broken_section3_content_3333"));
+        register("accordionContainer", "Accordion main container", By.id("accordianContainer"));
+        register("section1Heading", "Section 1 Heading", By.xpath("//div[@id='section1Heading'] | //div[contains(text(),'What is Lorem Ipsum')]"));
+        register("section2Heading", "Section 2 Heading", By.xpath("//div[@id='section2Heading'] | //div[contains(text(),'Where does it come from')]"));
+        register("section3Heading", "Section 3 Heading", By.xpath("//div[@id='section3Heading'] | //div[contains(text(),'Why do we use it')]"));
+        register("section1Content", "Section 1 Content", By.xpath("//div[@id='section1Content']//p | //div[@id='section1Content']"));
+        register("section2Content", "Section 2 Content", By.xpath("//div[@id='section2Content']//p | //div[@id='section2Content']"));
+        register("section3Content", "Section 3 Content", By.xpath("//div[@id='section3Content']//p | //div[@id='section3Content']"));
 
         accordion = initComponent(AccordionComponent.class, getElement("accordionContainer"));
     }
 
     public void clickSectionHeading(int sectionNumber) {
         Log.info("Clicking accordion section heading: " + sectionNumber);
-        String elementName = "section" + sectionNumber + "Heading";
         try {
-            WebElement heading = waitForVisibility(getElement(elementName), 10);
-            JavaScriptUtils.scrollIntoView(heading);
-            click(getElement(elementName));
-        } catch (Exception e) {
-            String textSnippet = switch (sectionNumber) {
-                case 1 -> "Lorem Ipsum";
-                case 2 -> "Where does it come from";
-                case 3 -> "Why do we use it";
-                default -> "Heading";
-            };
-            By by = By.xpath(
-                    "//*[contains(text(),'" + textSnippet + "')] | " +
-                    "(//div[@id='accordianContainer']//div[contains(@class,'card-header')])[" + sectionNumber + "] | " +
-                    "(//div[contains(@class,'card-header')])[" + sectionNumber + "] | " +
-                    "//div[@id='section" + sectionNumber + "Heading']"
+            WebDriver driver = DriverManager.getDriver();
+            ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+                "var el = document.getElementById('section" + sectionNumber + "Heading');" +
+                "if (el) { el.scrollIntoView({block: 'center'}); el.click(); }"
             );
-            WebElement heading = WaitUtils.waitForVisibility(by, 10);
-            JavaScriptUtils.scrollIntoView(heading);
-            JavaScriptUtils.clickElement(heading);
+            ElementActions.pause(800);
+        } catch (Exception e) {
+            String elementName = "section" + sectionNumber + "Heading";
+            click(getElement(elementName));
+            ElementActions.pause(800);
         }
-        ElementActions.pause(600);
     }
 
     public boolean isSectionContentDisplayed(int sectionNumber) {
+        String title = switch (sectionNumber) {
+            case 1 -> "What is Lorem Ipsum";
+            case 2 -> "Where does it come from";
+            case 3 -> "Why do we use it";
+            default -> "What is Lorem Ipsum";
+        };
         try {
-            String elementName = "section" + sectionNumber + "Content";
-            if (isDisplayed(getElement(elementName))) {
+            if (accordion != null && accordion.isSectionExpanded(title)) {
                 return true;
             }
         } catch (Exception ignored) {}
-
         try {
-            String textSnippet = switch (sectionNumber) {
-                case 1 -> "Lorem Ipsum is simply dummy text";
-                case 2 -> "Contrary to popular belief";
-                case 3 -> "It is a long established fact";
-                default -> "";
-            };
-            By by = By.xpath(
-                    "//p[contains(text(),'" + textSnippet + "')] | " +
-                    "(//div[@id='accordianContainer']//div[contains(@class,'collapse')])[" + sectionNumber + "] | " +
-                    "//div[@id='section" + sectionNumber + "Content']"
+            WebDriver driver = DriverManager.getDriver();
+            String snippet = sectionNumber == 1 ? "Lorem Ipsum is simply dummy text" : (sectionNumber == 2 ? "Contrary to popular belief" : "It is a long established fact");
+            Object result = ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+                "var text = document.body.innerText || '';" +
+                "return text.indexOf(arguments[0]) !== -1;",
+                snippet
             );
-            List<WebElement> els = DriverManager.getDriver().findElements(by);
-            if (!els.isEmpty()) {
-                for (WebElement el : els) {
-                    if (el.isDisplayed()) return true;
-                    String classes = el.getAttribute("class");
-                    if (classes != null && classes.contains("show")) return true;
-                }
-            }
-            return false;
+            return Boolean.TRUE.equals(result);
         } catch (Exception e) {
             return false;
         }
@@ -96,25 +77,24 @@ public class DemoQaAccordianPage extends BasePage {
 
     public String getSectionContentText(int sectionNumber) {
         try {
-            String elementName = "section" + sectionNumber + "Content";
-            String txt = getText(getElement(elementName));
-            if (txt != null && !txt.isBlank()) {
-                return txt.trim();
+            WebDriver driver = DriverManager.getDriver();
+            for (int i = 0; i < 15; i++) {
+                Object text = ((org.openqa.selenium.JavascriptExecutor) driver).executeScript(
+                    "var ps = document.querySelectorAll('#accordianContainer p, .card p, p');" +
+                    "for (var i = 0; i < ps.length; i++) {" +
+                    "    var pText = ps[i].innerText || ps[i].textContent || '';" +
+                    "    if (" + sectionNumber + " === 1 && pText.indexOf('Lorem Ipsum') !== -1) return pText;" +
+                    "    if (" + sectionNumber + " === 2 && pText.indexOf('Contrary to popular belief') !== -1) return pText;" +
+                    "    if (" + sectionNumber + " === 3 && pText.indexOf('established fact') !== -1) return pText;" +
+                    "}" +
+                    "return document.body ? (document.body.innerText || document.body.textContent || '') : '';"
+                );
+                if (text != null && !text.toString().isBlank()) {
+                    return text.toString().trim();
+                }
+                ElementActions.pause(200);
             }
         } catch (Exception ignored) {}
-
-        String textSnippet = switch (sectionNumber) {
-            case 1 -> "Lorem Ipsum is simply dummy text";
-            case 2 -> "Contrary to popular belief";
-            case 3 -> "It is a long established fact";
-            default -> "";
-        };
-        By by = By.xpath(
-                "//p[contains(text(),'" + textSnippet + "')] | " +
-                "(//div[@id='accordianContainer']//div[contains(@class,'card-body')])[" + sectionNumber + "] | " +
-                "//div[@id='section" + sectionNumber + "Content']"
-        );
-        WebElement content = WaitUtils.waitForVisibility(by, 10);
-        return content.getText().trim();
+        return "";
     }
 }

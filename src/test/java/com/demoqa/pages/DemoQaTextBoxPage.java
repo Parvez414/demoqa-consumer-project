@@ -1,12 +1,10 @@
 package com.demoqa.pages;
 
 import com.automation.components.ButtonComponent;
-import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
 import com.automation.utils.Log;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 public class DemoQaTextBoxPage extends BasePage {
 
@@ -18,12 +16,12 @@ public class DemoQaTextBoxPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("userName", "Full Name text input", By.id("invalid_broken_user_name_99999"));
-        register("userEmail", "Email address input field", By.xpath("//input[@id='broken_user_email_88888']"));
-        register("currentAddress", "Current Address textarea field", By.cssSelector("#brokenCurrentAddressTextarea"));
-        register("permanentAddress", "Permanent Address textarea field", By.id("invalid_permanent_address_77777"));
-        register("submitBtn", "Submit form button", By.xpath("///button[@id='invalid_submit_btn_66666']"));
-        register("outputCard", "Submitted form output details container", By.id("invalid_output_card_container_55555"));
+        register("userName", "Full Name text input", By.id("userName"));
+        register("userEmail", "Email address input field", By.id("userEmail"));
+        register("currentAddress", "Current Address textarea field", By.id("currentAddress"));
+        register("permanentAddress", "Permanent Address textarea field", By.id("permanentAddress"));
+        register("submitBtn", "Submit form button", By.id("submit"));
+        register("outputCard", "Submitted form output details container", By.id("output"));
 
         submitBtn = initComponent(ButtonComponent.class, getElement("submitBtn"));
     }
@@ -43,11 +41,6 @@ public class DemoQaTextBoxPage extends BasePage {
     }
 
     public String getOutputText() {
-        try {
-            return getText(getElement("outputCard"));
-        } catch (Exception e) {
-            WebElement output = DriverManager.getDriver().findElement(By.id("output"));
-            return output.getText();
-        }
+        return getText(getElement("outputCard"));
     }
 }

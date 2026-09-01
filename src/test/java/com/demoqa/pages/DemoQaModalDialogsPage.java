@@ -2,12 +2,9 @@ package com.demoqa.pages;
 
 import com.automation.components.ButtonComponent;
 import com.automation.components.ModalComponent;
-import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
-import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
-import com.automation.utils.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -23,14 +20,14 @@ public class DemoQaModalDialogsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("showSmallModalBtn", "Small Modal trigger button", By.id("invalid_show_small_modal_btn_9999"));
-        register("showLargeModalBtn", "Large Modal trigger button", By.id("invalid_show_large_modal_btn_8888"));
-        register("modalContent", "Modal dialog content container", By.className("invalid-modal-content-container-7777"));
-        register("smallModalTitle", "Small Modal title header", By.id("invalid_small_modal_title_6666"));
-        register("largeModalTitle", "Large Modal title header", By.id("invalid_large_modal_title_5555"));
-        register("modalBody", "Modal dialog body text", By.className("invalid-modal-body-4444"));
-        register("closeSmallModalBtn", "Close Small Modal button", By.id("invalid_close_small_modal_btn_3333"));
-        register("closeLargeModalBtn", "Close Large Modal button", By.id("invalid_close_large_modal_btn_2222"));
+        register("showSmallModalBtn", "Small Modal trigger button", By.id("showSmallModal"));
+        register("showLargeModalBtn", "Large Modal trigger button", By.id("showLargeModal"));
+        register("modalContent", "Modal dialog content container", By.className("modal-content"));
+        register("smallModalTitle", "Small Modal title header", By.id("example-modal-sizes-title-sm"));
+        register("largeModalTitle", "Large Modal title header", By.id("example-modal-sizes-title-lg"));
+        register("modalBody", "Modal dialog body text", By.className("modal-body"));
+        register("closeSmallModalBtn", "Close Small Modal button", By.id("closeSmallModal"));
+        register("closeLargeModalBtn", "Close Large Modal button", By.id("closeLargeModal"));
 
         smallModalBtn = initComponent(ButtonComponent.class, getElement("showSmallModalBtn"));
         largeModalBtn = initComponent(ButtonComponent.class, getElement("showLargeModalBtn"));
@@ -39,72 +36,47 @@ public class DemoQaModalDialogsPage extends BasePage {
 
     public void openSmallModal() {
         Log.info("Opening Small Modal");
-        try {
-            click(getElement("showSmallModalBtn"));
-        } catch (Exception e) {
-            WebElement btn = DriverManager.getDriver().findElement(By.id("showSmallModal"));
-            JavaScriptUtils.clickElement(btn);
-        }
+        click(getElement("showSmallModalBtn"));
         ElementActions.pause(300);
     }
 
     public void openLargeModal() {
         Log.info("Opening Large Modal");
-        try {
-            click(getElement("showLargeModalBtn"));
-        } catch (Exception e) {
-            WebElement btn = DriverManager.getDriver().findElement(By.id("showLargeModal"));
-            JavaScriptUtils.clickElement(btn);
-        }
+        click(getElement("showLargeModalBtn"));
         ElementActions.pause(300);
     }
 
     public String getSmallModalTitle() {
-        try {
-            return getText(getElement("smallModalTitle")).trim();
-        } catch (Exception e) {
-            WebElement el = WaitUtils.waitForVisibility(By.id("example-modal-sizes-title-sm"), 10);
-            return el.getText().trim();
-        }
+        return getText(getElement("smallModalTitle")).trim();
     }
 
     public String getLargeModalTitle() {
-        try {
-            return getText(getElement("largeModalTitle")).trim();
-        } catch (Exception e) {
-            WebElement el = WaitUtils.waitForVisibility(By.id("example-modal-sizes-title-lg"), 10);
-            return el.getText().trim();
-        }
+        return getText(getElement("largeModalTitle")).trim();
     }
 
     public String getModalBodyText() {
-        try {
-            return getText(getElement("modalBody")).trim();
-        } catch (Exception e) {
-            WebElement el = DriverManager.getDriver().findElement(By.className("modal-body"));
-            return el.getText().trim();
-        }
+        return getText(getElement("modalBody")).trim();
     }
 
     public void closeSmallModal() {
         Log.info("Closing Small Modal");
         try {
-            click(getElement("closeSmallModalBtn"));
+            ((org.openqa.selenium.JavascriptExecutor) com.automation.driver.DriverManager.getDriver())
+                .executeScript("var el = document.getElementById('closeSmallModal'); if (el) el.click();");
         } catch (Exception e) {
-            WebElement btn = DriverManager.getDriver().findElement(By.id("closeSmallModal"));
-            JavaScriptUtils.clickElement(btn);
+            click(getElement("closeSmallModalBtn"));
         }
-        ElementActions.pause(300);
+        ElementActions.pause(500);
     }
 
     public void closeLargeModal() {
         Log.info("Closing Large Modal");
         try {
-            click(getElement("closeLargeModalBtn"));
+            ((org.openqa.selenium.JavascriptExecutor) com.automation.driver.DriverManager.getDriver())
+                .executeScript("var el = document.getElementById('closeLargeModal'); if (el) el.click();");
         } catch (Exception e) {
-            WebElement btn = DriverManager.getDriver().findElement(By.id("closeLargeModal"));
-            JavaScriptUtils.clickElement(btn);
+            click(getElement("closeLargeModalBtn"));
         }
-        ElementActions.pause(300);
+        ElementActions.pause(500);
     }
 }

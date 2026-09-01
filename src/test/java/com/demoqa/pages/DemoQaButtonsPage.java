@@ -16,12 +16,12 @@ public class DemoQaButtonsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("doubleClickBtn", "Double Click Me button", By.id("invalid_double_click_btn_9999"));
-        register("rightClickBtn", "Right Click Me button", By.id("invalid_right_click_btn_8888"));
-        register("dynamicClickBtn", "Dynamic click button", By.xpath("//button[@id='invalid_click_me_btn_7777']"));
-        register("doubleClickMsg", "Double click confirmation message", By.id("invalid_double_click_msg_6666"));
-        register("rightClickMsg", "Right click confirmation message", By.id("invalid_right_click_msg_5555"));
-        register("dynamicClickMsg", "Dynamic click confirmation message", By.id("invalid_dynamic_click_msg_4444"));
+        register("doubleClickBtn", "Double Click Me button", By.id("doubleClickBtn"));
+        register("rightClickBtn", "Right Click Me button", By.id("rightClickBtn"));
+        register("dynamicClickBtn", "Dynamic click button", By.xpath("//button[text()='Click Me' and not(@id='doubleClickBtn') and not(@id='rightClickBtn')]"));
+        register("doubleClickMsg", "Double click confirmation message", By.id("doubleClickMessage"));
+        register("rightClickMsg", "Right click confirmation message", By.id("rightClickMessage"));
+        register("dynamicClickMsg", "Dynamic click confirmation message", By.id("dynamicClickMessage"));
     }
 
     public void performDoubleClick() {

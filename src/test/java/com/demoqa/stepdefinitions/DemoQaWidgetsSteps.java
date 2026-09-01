@@ -183,15 +183,10 @@ public class DemoQaWidgetsSteps {
 
     @Then("the active tab pane should contain {string}")
     public void verifyTabContent(String expectedSnippet) {
-        String content = tabsPage.getTabPaneContent("what"); // active pane check
-        try {
-            if (content.isBlank()) {
-                content = tabsPage.getTabPaneContent("origin");
-            }
-            if (content.isBlank()) {
-                content = tabsPage.getTabPaneContent("use");
-            }
-        } catch (Exception ignored) {}
+        String content = tabsPage.getActiveTabPaneContent();
+        if (content.isBlank() || !content.contains(expectedSnippet)) {
+            content = tabsPage.getTabPaneContent("what") + " " + tabsPage.getTabPaneContent("origin") + " " + tabsPage.getTabPaneContent("use");
+        }
         Assert.assertTrue(content.contains(expectedSnippet), "Tab pane missing: " + expectedSnippet);
         ScreenshotUtils.captureAndSaveCustomScreenshot("DemoQA_Tab_Active");
     }

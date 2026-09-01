@@ -17,18 +17,13 @@ public class DemoQaSliderPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("sliderInput", "Slider range input element", By.cssSelector("input#invalid_range_slider_9999"));
-        register("sliderValueBox", "Slider value display box", By.id("invalid_slider_value_8888"));
+        register("sliderInput", "Slider range input element", By.cssSelector("input.range-slider"));
+        register("sliderValueBox", "Slider value display box", By.id("sliderValue"));
     }
 
     public void setSliderValue(int targetValue) {
         Log.info("Setting slider value to: " + targetValue);
-        WebElement slider;
-        try {
-            slider = waitForVisibility(getElement("sliderInput"), 5);
-        } catch (Exception e) {
-            slider = DriverManager.getDriver().findElement(By.cssSelector("input.range-slider, input[type='range']"));
-        }
+        WebElement slider = waitForVisibility(getElement("sliderInput"), 5);
         int current = Integer.parseInt(slider.getAttribute("value"));
         int diff = targetValue - current;
 
@@ -37,7 +32,6 @@ public class DemoQaSliderPage extends BasePage {
             slider.sendKeys(key);
         }
 
-        // Alternatively sync via JS if needed
         if (Integer.parseInt(slider.getAttribute("value")) != targetValue) {
             JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
             js.executeScript(
@@ -49,12 +43,7 @@ public class DemoQaSliderPage extends BasePage {
     }
 
     public String getSliderValue() {
-        try {
-            WebElement box = waitForVisibility(getElement("sliderValueBox"), 5);
-            return box.getAttribute("value");
-        } catch (Exception e) {
-            WebElement box = DriverManager.getDriver().findElement(By.id("sliderValue"));
-            return box.getAttribute("value");
-        }
+        WebElement box = waitForVisibility(getElement("sliderValueBox"), 5);
+        return box.getAttribute("value");
     }
 }

@@ -3,7 +3,6 @@ package com.demoqa.pages;
 import com.automation.driver.DriverManager;
 import com.automation.pages.BasePage;
 import com.automation.utils.ElementActions;
-import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
@@ -18,21 +17,15 @@ public class DemoQaDragabblePage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("tabSimple", "Simple draggable tab", By.id("invalid_draggable_tab_simple_9999"));
-        register("tabAxis", "Axis restricted draggable tab", By.id("invalid_draggable_tab_axis_8888"));
-        register("dragBox", "Simple drag box", By.id("invalid_drag_box_7777"));
+        register("tabSimple", "Simple draggable tab", By.id("draggableExample-tab-simple"));
+        register("tabAxis", "Axis restricted draggable tab", By.id("draggableExample-tab-axisRestriction"));
+        register("dragBox", "Simple drag box", By.id("dragBox"));
     }
 
     public void selectTab(String tabName) {
         Log.info("Selecting draggable tab: " + tabName);
         String elementName = "axis".equalsIgnoreCase(tabName) ? "tabAxis" : "tabSimple";
-        try {
-            click(getElement(elementName));
-        } catch (Exception e) {
-            String id = "axis".equalsIgnoreCase(tabName) ? "draggableExample-tab-axisRestriction" : "draggableExample-tab-simple";
-            WebElement tab = DriverManager.getDriver().findElement(By.id(id));
-            JavaScriptUtils.clickElement(tab);
-        }
+        click(getElement(elementName));
         ElementActions.pause(300);
     }
 

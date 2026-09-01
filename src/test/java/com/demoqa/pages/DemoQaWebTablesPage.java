@@ -8,7 +8,6 @@ import com.automation.utils.JavaScriptUtils;
 import com.automation.utils.Log;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -26,16 +25,16 @@ public class DemoQaWebTablesPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("searchBox", "Search web tables input field", By.id("invalid_search_box_9999"));
-        register("addNewRecordButton", "Add new record button", By.id("invalid_add_new_record_button_8888"));
-        register("firstNameInput", "Registration form First Name", By.id("invalid_first_name_input_7777"));
-        register("lastNameInput", "Registration form Last Name", By.id("invalid_last_name_input_6666"));
-        register("userEmailInput", "Registration form Email", By.id("invalid_user_email_input_5555"));
-        register("ageInput", "Registration form Age", By.id("invalid_age_input_4444"));
-        register("salaryInput", "Registration form Salary", By.id("invalid_salary_input_3333"));
-        register("departmentInput", "Registration form Department", By.id("invalid_department_input_2222"));
-        register("submitButton", "Registration modal Submit button", By.id("invalid_submit_button_1111"));
-        register("tableContainer", "Web table container element", By.className("invalid-rt-table-0000"));
+        register("searchBox", "Search web tables input field", By.id("searchBox"));
+        register("addNewRecordButton", "Add new record button", By.id("addNewRecordButton"));
+        register("firstNameInput", "Registration form First Name", By.id("firstName"));
+        register("lastNameInput", "Registration form Last Name", By.id("lastName"));
+        register("userEmailInput", "Registration form Email", By.id("userEmail"));
+        register("ageInput", "Registration form Age", By.id("age"));
+        register("salaryInput", "Registration form Salary", By.id("salary"));
+        register("departmentInput", "Registration form Department", By.id("department"));
+        register("submitButton", "Registration modal Submit button", By.id("submit"));
+        register("tableContainer", "Web table container element", By.className("rt-table"));
 
         addNewRecordBtn = initComponent(ButtonComponent.class, getElement("addNewRecordButton"));
         submitRecordBtn = initComponent(ButtonComponent.class, getElement("submitButton"));
@@ -43,26 +42,13 @@ public class DemoQaWebTablesPage extends BasePage {
 
     public void searchTable(String query) {
         Log.info("Searching Web Table for: [" + query + "]");
-        WebElement search;
-        try {
-            search = waitForVisibility(getElement("searchBox"), 10);
-        } catch (Exception e) {
-            search = com.automation.utils.WaitUtils.waitForVisibility(getElement("searchBox").getCurrentBy(), 10);
-        }
-        search.click();
-        search.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
         sendKeys(getElement("searchBox"), query);
-        ElementActions.pause(600);
+        ElementActions.pause(500);
     }
 
     public void clickAddNewRecord() {
         Log.info("Clicking Add New Record button");
-        try {
-            click(getElement("addNewRecordButton"));
-        } catch (Exception e) {
-            WebElement btn = DriverManager.getDriver().findElement(By.id("addNewRecordButton"));
-            JavaScriptUtils.clickElement(btn);
-        }
+        click(getElement("addNewRecordButton"));
         ElementActions.pause(400);
     }
 
@@ -74,83 +60,32 @@ public class DemoQaWebTablesPage extends BasePage {
         sendKeys(getElement("ageInput"), age);
         sendKeys(getElement("salaryInput"), salary);
         sendKeys(getElement("departmentInput"), department);
-        
-        try {
-            click(getElement("submitButton"));
-        } catch (Exception e) {
-            WebElement submit = DriverManager.getDriver().findElement(getElement("submitButton").getCurrentBy());
-            JavaScriptUtils.clickElement(submit);
-        }
-        ElementActions.pause(800);
+        click(getElement("submitButton"));
+        ElementActions.pause(600);
     }
 
     public void editRecord(String firstName, String newSalary, String newDept) {
         Log.info("Editing record for [" + firstName + "] with salary: " + newSalary + ", dept: " + newDept);
-        try {
-            By by = By.xpath(
-                    "//div[contains(@class,'rt-tr-group') or contains(@class,'rt-tr')][.//div[contains(text(),'" + firstName + "')]]//span[@title='Edit' or contains(@id,'edit')] | " +
-                    "//span[@title='Edit']"
-            );
-            WebElement editBtn = com.automation.utils.WaitUtils.waitForPresence(by, 8);
-            JavaScriptUtils.clickElement(editBtn);
-        } catch (Exception e) {
-            JavaScriptUtils.executeScript(
-                    "let rows = Array.from(document.querySelectorAll('.rt-tr-group, .rt-tr'));" +
-                    "let row = rows.find(r => r.textContent.includes(arguments[0]));" +
-                    "let btn = row ? (row.querySelector('span[title=\"Edit\"], [id*=\"edit\"]') || row.querySelector('.action-buttons span')) : document.querySelector('span[title=\"Edit\"]');" +
-                    "if (btn) btn.click();",
-                    firstName
-            );
-        }
-        ElementActions.pause(500);
+        By editBy = By.xpath(
+                "//div[contains(@class,'rt-tr-group') or contains(@class,'rt-tr')][.//div[contains(text(),'" + firstName + "')]]//span[@title='Edit' or contains(@id,'edit')] | " +
+                "//span[@title='Edit']"
+        );
+        ElementActions.click(editBy);
+        ElementActions.pause(400);
 
-        try {
-            WebElement salaryInput = waitForVisibility(getElement("salaryInput"), 5);
-            salaryInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-            sendKeys(getElement("salaryInput"), newSalary);
-        } catch (Exception e) {
-            WebElement salaryInput = com.automation.utils.WaitUtils.waitForPresence(By.id("salary"), 5);
-            salaryInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-            salaryInput.sendKeys(newSalary);
-        }
-
-        try {
-            WebElement deptInput = waitForVisibility(getElement("departmentInput"), 5);
-            deptInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-            sendKeys(getElement("departmentInput"), newDept);
-        } catch (Exception e) {
-            WebElement deptInput = DriverManager.getDriver().findElement(By.id("department"));
-            deptInput.sendKeys(Keys.chord(Keys.CONTROL, "a"), Keys.BACK_SPACE);
-            deptInput.sendKeys(newDept);
-        }
-
-        try {
-            click(getElement("submitButton"));
-        } catch (Exception e) {
-            WebElement submit = DriverManager.getDriver().findElement(By.id("submit"));
-            JavaScriptUtils.clickElement(submit);
-        }
+        sendKeys(getElement("salaryInput"), newSalary);
+        sendKeys(getElement("departmentInput"), newDept);
+        click(getElement("submitButton"));
         ElementActions.pause(600);
     }
 
     public void deleteRecord(String firstName) {
         Log.info("Deleting record for: [" + firstName + "]");
-        try {
-            By by = By.xpath(
-                    "//div[contains(@class,'rt-tr-group') or contains(@class,'rt-tr')][.//div[contains(text(),'" + firstName + "')]]//span[@title='Delete' or contains(@id,'delete')] | " +
-                    "//span[@title='Delete']"
-            );
-            WebElement deleteBtn = com.automation.utils.WaitUtils.waitForPresence(by, 8);
-            JavaScriptUtils.clickElement(deleteBtn);
-        } catch (Exception e) {
-            JavaScriptUtils.executeScript(
-                    "let rows = Array.from(document.querySelectorAll('.rt-tr-group, .rt-tr'));" +
-                    "let row = rows.find(r => r.textContent.includes(arguments[0]));" +
-                    "let btn = row ? (row.querySelector('span[title=\"Delete\"], [id*=\"delete\"]') || row.querySelectorAll('.action-buttons span')[1]) : document.querySelector('span[title=\"Delete\"]');" +
-                    "if (btn) btn.click();",
-                    firstName
-            );
-        }
+        By deleteBy = By.xpath(
+                "//div[contains(@class,'rt-tr-group') or contains(@class,'rt-tr')][.//div[contains(text(),'" + firstName + "')]]//span[@title='Delete' or contains(@id,'delete')] | " +
+                "//span[@title='Delete']"
+        );
+        ElementActions.click(deleteBy);
         ElementActions.pause(500);
     }
 
@@ -159,7 +94,6 @@ public class DemoQaWebTablesPage extends BasePage {
         try {
             By by = By.cssSelector("select[aria-label='rows per page'], .select-wrap select, .-pageSizeOptions select, select");
             WebElement selectEl = com.automation.utils.WaitUtils.waitForPresence(by, 8);
-            JavaScriptUtils.scrollIntoView(selectEl);
             Select select = new Select(selectEl);
             select.selectByValue(rowsCount);
         } catch (Exception e) {

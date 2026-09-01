@@ -25,12 +25,12 @@ public class DemoQaAlertsPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("alertButton", "Simple alert trigger button", By.id("invalid_alert_button_9999"));
-        register("timerAlertButton", "5 second timer alert button", By.id("invalid_timer_alert_button_8888"));
-        register("confirmButton", "Confirm box trigger button", By.id("invalid_confirm_button_7777"));
-        register("promtButton", "Prompt box trigger button", By.id("invalid_prompt_button_6666"));
-        register("confirmResult", "Confirm alert user selection result text", By.id("invalid_confirm_result_5555"));
-        register("promptResult", "Prompt alert user input response result text", By.id("invalid_prompt_result_4444"));
+        register("alertButton", "Simple alert trigger button", By.id("alertButton"));
+        register("timerAlertButton", "5 second timer alert button", By.id("timerAlertButton"));
+        register("confirmButton", "Confirm box trigger button", By.id("confirmButton"));
+        register("promtButton", "Prompt box trigger button", By.id("promtButton"));
+        register("confirmResult", "Confirm alert user selection result text", By.id("confirmResult"));
+        register("promptResult", "Prompt alert user input response result text", By.id("promptResult"));
 
         simpleAlertBtn = initComponent(ButtonComponent.class, getElement("alertButton"));
         timerAlertBtn = initComponent(ButtonComponent.class, getElement("timerAlertButton"));

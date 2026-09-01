@@ -17,10 +17,10 @@ public class DemoQaMenuPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("mainItem2", "Main Item 2 navigation item", By.xpath("//a[@id='invalid_main_item_2_9999']"));
-        register("subSubList", "Sub Sub List item container", By.xpath("//a[@id='invalid_sub_sub_list_8888']"));
-        register("subSubItem1", "Sub Sub Item 1 navigation item", By.xpath("//a[@id='invalid_sub_sub_item_1_7777']"));
-        register("subSubItem2", "Sub Sub Item 2 navigation item", By.xpath("//a[@id='invalid_sub_sub_item_2_6666']"));
+        register("mainItem2", "Main Item 2 navigation item", By.xpath("//a[text()='Main Item 2']"));
+        register("subSubList", "Sub Sub List item container", By.xpath("//a[text()='SUB SUB LIST »']"));
+        register("subSubItem1", "Sub Sub Item 1 navigation item", By.xpath("//a[text()='Sub Sub Item 1']"));
+        register("subSubItem2", "Sub Sub Item 2 navigation item", By.xpath("//a[text()='Sub Sub Item 2']"));
     }
 
     public void hoverOverMainItem2() {
@@ -41,13 +41,9 @@ public class DemoQaMenuPage extends BasePage {
 
     public boolean isSubSubItemVisible(String subItemText) {
         if ("Sub Sub Item 1".equalsIgnoreCase(subItemText)) {
-            try {
-                return isDisplayed(getElement("subSubItem1"));
-            } catch (Exception ignored) {}
+            return isDisplayed(getElement("subSubItem1"));
         } else if ("Sub Sub Item 2".equalsIgnoreCase(subItemText)) {
-            try {
-                return isDisplayed(getElement("subSubItem2"));
-            } catch (Exception ignored) {}
+            return isDisplayed(getElement("subSubItem2"));
         }
         WebElement el = WaitUtils.waitForVisibility(By.xpath("//a[contains(text(),'" + subItemText + "')]"), 5);
         return el != null && el.isDisplayed();
