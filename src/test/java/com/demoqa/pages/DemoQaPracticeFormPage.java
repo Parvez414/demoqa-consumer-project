@@ -25,17 +25,17 @@ public class DemoQaPracticeFormPage extends BasePage {
 
     @Override
     protected void initElements() {
-        register("firstName", "First Name input field", By.id("firstName2"));
-        register("lastName", "Last Name input field", By.id("lasttName"));
-        register("userEmail", "Email input field", By.id("userEmail1"));
-        register("userNumber", "10-digit Mobile Number input field", By.id("userNumber21"));
-        register("dateOfBirthInput", "Date of Birth input field", By.id("dateOfBirthInput-0"));
-        register("subjectsInput", "Subjects autocomplete input field", By.id("subjectsInput-98"));
-        register("currentAddress", "Current Address textarea field", By.id("currenttAddress"));
-        register("stateDropdown", "State React select container", By.id("state1"));
+        register("firstName", "First Name input field", By.id("firstName"));
+        register("lastName", "Last Name input field", By.id("lastName"));
+        register("userEmail", "Email input field", By.id("userEmail"));
+        register("userNumber", "10-digit Mobile Number input field", By.id("userNumber"));
+        register("dateOfBirthInput", "Date of Birth input field", By.id("dateOfBirthInput"));
+        register("subjectsInput", "Subjects autocomplete input field", By.id("subjectsInput"));
+        register("currentAddress", "Current Address textarea field", By.id("currentAddress"));
+        register("stateDropdown", "State React select container", By.id("state"));
         register("cityDropdown", "City React select container", By.id("city"));
-        register("stateInput", "State React select input", By.id("react-select-4-input"));
-        register("cityInput", "City React select input", By.id("react-select-5-input"));
+        register("stateInput", "State React select input", By.id("react-select-3-input"));
+        register("cityInput", "City React select input", By.id("react-select-4-input"));
         register("uploadPicture", "Upload Picture input field", By.id("uploadPicture"));
         register("submitBtn", "Submit practice form button", By.id("submit"));
         register("submissionModal", "Submission result modal container", By.className("modal-dialog"));
