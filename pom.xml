@@ -19,22 +19,11 @@
         <allure.version>2.27.0</allure.version>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Parvez414/ai-powered-test-automation-platform</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
         <!-- AI-Powered Automation Framework Core SDK Dependency -->
         <dependency>
             <groupId>com.automation</groupId>
-            <artifactId>ai-automation-core</artifactId>
+            <artifactId>ai-automation-framework</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
