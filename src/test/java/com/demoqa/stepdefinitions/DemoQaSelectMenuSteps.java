@@ -22,8 +22,8 @@ public class DemoQaSelectMenuSteps {
     public void openSelectMenuPage() {
         String url = ConfigReader.get("app.selectmenu.url");
         Log.info("Navigating to DemoQA Select Menu page: " + url);
-        DriverManager.getDriver().get(url);
-        ElementActions.pause(1000);
+        ElementActions.navigateToUrl(url);
+        ElementActions.pause(500);
         selectMenuPage = new DemoQaSelectMenuPage();
         selectMenuPage.validateAndHealPageElements();
         ScreenshotUtils.captureAndSaveCustomScreenshot("DemoQA_Select_Menu_Page_Loaded");

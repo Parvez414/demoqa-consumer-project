@@ -132,13 +132,46 @@ modal.close();
 - **Apache Maven**: 3.8.0+ (`mvn -version`)
 - **Google Chrome**: Desktop browser (latest version)
 
-### 📦 Install Core SDK JAR into Local Maven Repository
+### 📦 Core SDK Installation & Distribution
 
-This project depends on the **AI-Powered Automation Framework Core SDK** (`com.automation:ai-automation-framework:1.0.0`). The pre-packaged SDK JAR is provided in the [`core_sdk_jar/`](core_sdk_jar/) directory.
+#### Option 1: GitHub Packages (Cloud Distribution)
+Configure your `~/.m2/settings.xml` (Windows: `C:\Users\<user>\.m2\settings.xml`):
+```xml
+<settings>
+  <servers>
+    <server>
+      <id>github</id>
+      <username>YOUR_GITHUB_USERNAME</username>
+      <password>${env.GITHUB_TOKEN}</password>
+    </server>
+  </servers>
+</settings>
+```
+Declare the repository and dependency in `pom.xml`:
+```xml
+<repositories>
+    <repository>
+        <id>github</id>
+        <name>GitHub Packages</name>
+        <url>https://maven.pkg.github.com/Parvez414/ai-powered-test-automation-platform</url>
+    </repository>
+</repositories>
 
-To install this JAR into your local Maven cache (`~/.m2/repository`), run the following command from the project root:
+<dependencies>
+    <dependency>
+        <groupId>com.automation</groupId>
+        <artifactId>ai-automation-core</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
+```
 
-#### On Linux / macOS / Bash:
+#### Option 2: Local JAR Installation (Offline / Air-Gapped)
+This project includes the pre-packaged SDK JAR in [`core_sdk_jar/`](core_sdk_jar/).
+
+To install this JAR into your local Maven cache (`~/.m2/repository`):
+
+##### Linux / macOS / Bash:
 ```bash
 mvn install:install-file \
   -Dfile=core_sdk_jar/ai-automation-framework-1.0.0.jar \
@@ -148,7 +181,7 @@ mvn install:install-file \
   -Dpackaging=jar
 ```
 
-#### On Windows (PowerShell / Command Prompt):
+##### Windows (PowerShell / Command Prompt):
 ```powershell
 mvn install:install-file "-Dfile=core_sdk_jar/ai-automation-framework-1.0.0.jar" "-DgroupId=com.automation" "-DartifactId=ai-automation-framework" "-Dversion=1.0.0" "-Dpackaging=jar"
 ```
@@ -275,10 +308,10 @@ ai.ollama.timeout.seconds=30
 - **AI Element Healing History**: `target/element-healing-history.json`
 - **Step & Failure Screenshots**: `target/screenshots/`
 - **Allure Interactive Report**: `mvn allure:serve`
-- **Live Telemetry Hub**: Automatically stream test and self-healing telemetry to the Centralized Web Portal (Port `8999`):
+- **Live Telemetry Hub**: Automatically stream test and self-healing telemetry to the Centralized Web Portal (Port `8080`):
   ```properties
   ai.telemetry.enabled=true
-  ai.telemetry.url=http://localhost:8999/api/telemetry/report
+  ai.telemetry.url=http://localhost:8080/api/telemetry/report
   ```
 
 ---
@@ -320,7 +353,7 @@ Comprehensive configuration options available in [`src/test/resources/config/con
 | | `ai.runtime.healing.enabled` | `true` | Dynamic mid-interaction runtime locator healing |
 | | `ai.heuristic.escalation.threshold` | `0.70` | Confidence threshold to escalate to LLMs |
 | **Telemetry & Reporting** | `ai.telemetry.enabled` | `true` | Live telemetry streaming to Web Portal |
-| | `ai.telemetry.url` | `http://localhost:8999/api/telemetry/report` | Centralized telemetry endpoint URL |
+| | `ai.telemetry.url` | `http://localhost:8080/api/telemetry/report` | Centralized telemetry endpoint URL |
 | **Git Auto-Patch** | `ai.autopatch.enabled` | `false` | Automatic Page Object source patching |
 | | `ai.autopatch.auto.branch` | `true` | Create new branch for healed locators |
 

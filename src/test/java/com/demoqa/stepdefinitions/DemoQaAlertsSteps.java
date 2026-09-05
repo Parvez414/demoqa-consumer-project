@@ -18,7 +18,7 @@ public class DemoQaAlertsSteps {
     @Given("I open the DemoQA Alerts page")
     public void openAlertsPage() {
         String url = ConfigReader.get("app.alerts.url");
-        DriverManager.getDriver().get(url);
+        ElementActions.navigateToUrl(url);
         ElementActions.pause(500);
         alertsPage = new DemoQaAlertsPage();
     }
