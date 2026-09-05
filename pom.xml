@@ -20,18 +20,23 @@
     </properties>
 
     <repositories>
+        <!-- Pre-bundled local repository: Zero GitHub auth or settings.xml required -->
         <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/Parvez414/ai-powered-test-automation-platform</url>
-            <snapshots>
+            <id>healqa-local-repo</id>
+            <name>HealQA Embedded Core Repository</name>
+            <url>file://${project.basedir}/.repo</url>
+            <releases>
                 <enabled>true</enabled>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
     </repositories>
 
     <dependencies>
-        <!-- AI-Powered Automation Framework Core SDK Dependency -->
+        <!-- Hardened ProGuard Obfuscated Core SDK -->
         <dependency>
             <groupId>com.automation</groupId>
             <artifactId>ai-automation-core</artifactId>
