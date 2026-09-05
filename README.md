@@ -132,63 +132,11 @@ modal.close();
 - **Apache Maven**: 3.8.0+ (`mvn -version`)
 - **Google Chrome**: Desktop browser (latest version)
 
-### 📦 Core SDK Installation & Distribution
-
-#### Option 1: GitHub Packages (Cloud Distribution)
-Configure your `~/.m2/settings.xml` (Windows: `C:\Users\<user>\.m2\settings.xml`):
-```xml
-<settings>
-  <servers>
-    <server>
-      <id>github</id>
-      <username>YOUR_GITHUB_USERNAME</username>
-      <password>${env.GITHUB_TOKEN}</password>
-    </server>
-  </servers>
-</settings>
-```
-Declare the repository and dependency in `pom.xml`:
-```xml
-<repositories>
-    <repository>
-        <id>github</id>
-        <name>GitHub Packages</name>
-        <url>https://maven.pkg.github.com/Parvez414/ai-powered-test-automation-platform</url>
-    </repository>
-</repositories>
-
-<dependencies>
-    <dependency>
-        <groupId>com.automation</groupId>
-        <artifactId>ai-automation-core</artifactId>
-        <version>1.0.0</version>
-    </dependency>
-</dependencies>
-```
-
-#### Option 2: Local JAR Installation (Offline / Air-Gapped)
-This project includes the pre-packaged SDK JAR in [`core_sdk_jar/`](core_sdk_jar/).
-
-To install this JAR into your local Maven cache (`~/.m2/repository`):
-
-##### Linux / macOS / Bash:
+### Execute Tests
+Run the test suite directly from this directory:
 ```bash
-mvn install:install-file \
-  -Dfile=core_sdk_jar/ai-automation-framework-1.0.0.jar \
-  -DgroupId=com.automation \
-  -DartifactId=ai-automation-framework \
-  -Dversion=1.0.0 \
-  -Dpackaging=jar
+mvn test
 ```
-
-##### Windows (PowerShell / Command Prompt):
-```powershell
-mvn install:install-file "-Dfile=core_sdk_jar/ai-automation-framework-1.0.0.jar" "-DgroupId=com.automation" "-DartifactId=ai-automation-framework" "-Dversion=1.0.0" "-Dpackaging=jar"
-```
-
-Once installed, Maven will resolve all SDK classes, components, driver utilities, and test helpers seamlessly.
-
----
 
 ## 5. Running Tests Locally
 
