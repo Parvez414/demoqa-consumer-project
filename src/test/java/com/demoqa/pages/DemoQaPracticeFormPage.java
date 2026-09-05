@@ -35,13 +35,13 @@ public class DemoQaPracticeFormPage extends BasePage {
         register("stateDropdown", "State React select container", By.id("state"));
         register("cityDropdown", "City React select container", By.id("city"));
         register("stateInput", "State React select input", By.id("react-select-3-input"));
-        register("cityInput", "City React select input", By.id("react-select-4-input"));
+        register("cityInput", "City React select input", By.xpath("//div[@id='city']//input | //input[contains(@id,'react-select-4')]"));
         register("uploadPicture", "Upload Picture input field", By.id("uploadPicture"));
         register("submitBtn", "Submit practice form button", By.id("submit"));
         register("submissionModal", "Submission result modal container", By.className("modal-dialog"));
         register("modalTitle", "Submission modal title", By.id("example-modal-sizes-title-lg"));
         register("modalTable", "Submission result details table", By.className("table-responsive"));
-        register("closeModalBtn", "Close submission modal button", By.id("closeLargeModal"));
+        register("closeModalBtn", "Close submission modal button", By.id("submit"));
 
         submitBtn = initComponent(ButtonComponent.class, getElement("submitBtn"));
         submissionModal = initComponent(ModalComponent.class, getElement("submissionModal"));
