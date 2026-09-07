@@ -1,4 +1,4 @@
-name: HealQA Enterprise Test Automation CI/CD
+name: HealQA Enterprise Cloud Test Runner
 
 on:
   push:
@@ -6,10 +6,52 @@ on:
   pull_request:
     branches: [ main, master, develop ]
   workflow_dispatch:
+    # These inputs are populated automatically by HealQA when launched from the UI
+    inputs:
+      browser:
+        description: 'Target Browser (chrome, firefox, edge)'
+        required: false
+        default: 'chrome'
+      tags:
+        description: 'Cucumber Tag Filter (e.g. @smoke, @regression)'
+        required: false
+        default: ''
+      ai_provider:
+        description: 'AI Provider (gemini, openai, anthropic)'
+        required: false
+        default: 'gemini'
+      gemini_api_key:
+        description: 'Gemini API Key override from HealQA UI (optional)'
+        required: false
+        default: ''
+      openai_api_key:
+        description: 'OpenAI API Key override from HealQA UI (optional)'
+        required: false
+        default: ''
+      environment:
+        description: 'Target Environment (dev, qa, staging, prod)'
+        required: false
+        default: 'qa'
+      headless:
+        description: 'Run in headless mode (true/false)'
+        required: false
+        default: 'true'
+      thread_count:
+        description: 'Parallel Thread Count'
+        required: false
+        default: '2'
+      retry_count:
+        description: 'Failed Test Retry Count'
+        required: false
+        default: '1'
+      telemetry_url:
+        description: 'Telemetry Report Endpoint URL'
+        required: false
+        default: ''
 
 jobs:
   test:
-    name: Run Automated AI Tests
+    name: Run Automated Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -24,15 +66,24 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Test Suite in Headless CI Mode
+      - name: Run Test Suite on Cloud Runner
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Priority: UI Ephemeral Key -> GitHub Repository Secret
+          GEMINI_API_KEY: ${{ github.event.inputs.gemini_api_key || secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ github.event.inputs.openai_api_key || secrets.OPENAI_API_KEY }}
         run: |
           mvn clean test \
-            -Dheadless=true \
+            -Dbrowser="${{ github.event.inputs.browser || 'chrome' }}" \
+            -Dcucumber.filter.tags="${{ github.event.inputs.tags }}" \
+            -Dai.provider="${{ github.event.inputs.ai_provider || 'gemini' }}" \
+            -Dai.gemini.api.key="${{ github.event.inputs.gemini_api_key || secrets.GEMINI_API_KEY }}" \
+            -Dai.openai.api.key="${{ github.event.inputs.openai_api_key || secrets.OPENAI_API_KEY }}" \
+            -Denv="${{ github.event.inputs.environment || 'qa' }}" \
+            -Dheadless="${{ github.event.inputs.headless || 'true' }}" \
+            -Dthread.count="${{ github.event.inputs.thread_count || '2' }}" \
+            -Dretry.count="${{ github.event.inputs.retry_count || '1' }}" \
             -Dexecution.mode=local \
-            -Dai.telemetry.url="${{ secrets.PLATFORM_TELEMETRY_URL || 'http://172.20.208.1:8080/api/v1/telemetry/report' }}"
+            -Dai.telemetry.url="${{ github.event.inputs.telemetry_url || secrets.PLATFORM_TELEMETRY_URL || 'https://healqa.in/api/v1/telemetry/report' }}"
 
       - name: Archive Test Execution Reports
         if: always()
