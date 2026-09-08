@@ -15,9 +15,9 @@ public class DemoQaBrokenHealingPage extends BasePage {
     protected void initElements() {
         // Intentionally broken locators to verify AI Core SDK healing across different
         // applications
-        register("brokenUserName", "Full Name text input field", By.id("invalid_broken_user_name_99999"));
-        register("brokenSubmitBtn", "Submit form button", By.xpath("///button[@id='invalid_submit_btn']"));
-        register("brokenOldSelect", "Old style HTML select dropdown", By.cssSelector("#brokenOldSelectMenu123"));
+        register("brokenUserName", "Full Name text input field", By.id("userName"));
+        register("brokenSubmitBtn", "Submit form button", By.id("submit"));
+        register("brokenOldSelect", "Old style HTML select dropdown", By.xpath("//li[normalize-space()='Select Menu']"));
     }
 
     public void enterBrokenUserName(String name) {

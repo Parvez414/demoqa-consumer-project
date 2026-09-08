@@ -30,8 +30,7 @@ public class DemoQaSelectMenuPage extends BasePage {
         register("selectValueDropdown", "Select Value react dropdown input container", By.id("withOptGroup"));
         register("selectOneDropdown", "Select One title react dropdown container", By.id("selectOne"));
         register("oldSelectMenu", "Old style HTML standard select dropdown", By.id("oldSelectMenu"));
-        register("multiSelectInput", "Multiselect react dropdown input container", By.xpath(
-                "//div[@id='selectMenuContainer']//div[contains(@class,'css-2b097c-container')][.//div[contains(text(),'Select...')]] | (//div[contains(@class,'css-2b097c-container')])[3]"));
+        register("multiSelectInput", "Multiselect react dropdown input container", By.xpath("//input[contains(@id,'react-select-4')]"));
         register("standardMultiSelect", "Standard HTML multi select cars", By.id("cars"));
 
         // Initialize reusable SelectComponent for each dropdown type
