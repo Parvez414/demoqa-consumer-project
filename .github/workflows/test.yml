@@ -1,4 +1,4 @@
-name: HealQA Enterprise Cloud Test Runner
+name: HealQA Enterprise Test Automation CI/CD
 
 on:
   push:
@@ -6,8 +6,15 @@ on:
   pull_request:
     branches: [ main, master, develop ]
   workflow_dispatch:
-    # These inputs are populated automatically by HealQA when launched from the UI
     inputs:
+      maven_args:
+        description: 'Maven test execution options (managed by HealQA Platform)'
+        required: false
+        default: ''
+      engine_type:
+        description: 'Execution Engine (selenium, playwright)'
+        required: false
+        default: 'selenium'
       browser:
         description: 'Target Browser (chrome, firefox, edge)'
         required: false
@@ -21,11 +28,11 @@ on:
         required: false
         default: 'gemini'
       gemini_api_key:
-        description: 'Gemini API Key override from HealQA UI (optional)'
+        description: 'Gemini API Key override (optional)'
         required: false
         default: ''
       openai_api_key:
-        description: 'OpenAI API Key override from HealQA UI (optional)'
+        description: 'OpenAI API Key override (optional)'
         required: false
         default: ''
       environment:
@@ -33,7 +40,7 @@ on:
         required: false
         default: 'qa'
       headless:
-        description: 'Run in headless mode (true/false)'
+        description: 'Headless Mode (true/false)'
         required: false
         default: 'true'
       thread_count:
@@ -48,10 +55,30 @@ on:
         description: 'Telemetry Report Endpoint URL'
         required: false
         default: ''
+      healqa_api_url:
+        description: 'HealQA Platform Server URL for Realtime Event Ingestion'
+        required: false
+        default: ''
+      healqa_realtime_enabled:
+        description: 'Enable Realtime Event Ingestion'
+        required: false
+        default: 'false'
+      healqa_api_token:
+        description: 'HealQA Execution API Token'
+        required: false
+        default: ''
+      healqa_run_id:
+        description: 'HealQA Run ID'
+        required: false
+        default: ''
+      healqa_execution_id:
+        description: 'HealQA Execution ID'
+        required: false
+        default: ''
 
 jobs:
   test:
-    name: Run Automated Tests
+    name: Run Automated AI Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -66,24 +93,36 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Test Suite on Cloud Runner
+      - name: Run Test Suite in Cloud CI Runner
         env:
-          # Priority: UI Ephemeral Key -> GitHub Repository Secret
           GEMINI_API_KEY: ${{ github.event.inputs.gemini_api_key || secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ github.event.inputs.openai_api_key || secrets.OPENAI_API_KEY }}
+          HEALQA_API_URL: ${{ github.event.inputs.healqa_api_url || secrets.HEALQA_API_URL }}
+          HEALQA_REALTIME_ENABLED: ${{ github.event.inputs.healqa_realtime_enabled || 'false' }}
+          HEALQA_API_TOKEN: ${{ github.event.inputs.healqa_api_token || secrets.HEALQA_API_TOKEN }}
+          HEALQA_RUN_ID: ${{ github.event.inputs.healqa_run_id || github.event.inputs.healqa_execution_id || secrets.HEALQA_RUN_ID }}
+          HEALQA_EXECUTION_ID: ${{ github.event.inputs.healqa_execution_id || github.event.inputs.healqa_run_id || secrets.HEALQA_RUN_ID }}
+          HEALQA_EXECUTION_SOURCE: GITHUB_ACTIONS
+          MAVEN_ARGS: ${{ github.event.inputs.maven_args }}
         run: |
-          mvn clean test \
-            -Dbrowser="${{ github.event.inputs.browser || 'chrome' }}" \
-            -Dcucumber.filter.tags="${{ github.event.inputs.tags }}" \
-            -Dai.provider="${{ github.event.inputs.ai_provider || 'gemini' }}" \
-            -Dai.gemini.api.key="${{ github.event.inputs.gemini_api_key || secrets.GEMINI_API_KEY }}" \
-            -Dai.openai.api.key="${{ github.event.inputs.openai_api_key || secrets.OPENAI_API_KEY }}" \
-            -Denv="${{ github.event.inputs.environment || 'qa' }}" \
-            -Dheadless="${{ github.event.inputs.headless || 'true' }}" \
-            -Dthread.count="${{ github.event.inputs.thread_count || '2' }}" \
-            -Dretry.count="${{ github.event.inputs.retry_count || '1' }}" \
-            -Dexecution.mode=local \
-            -Dai.telemetry.url="${{ github.event.inputs.telemetry_url || secrets.PLATFORM_TELEMETRY_URL || 'https://healqa.in/api/v1/telemetry/report' }}"
+          if [ -n "$MAVEN_ARGS" ]; then
+            eval "mvn clean test $MAVEN_ARGS"
+          else
+            mvn clean test \
+              -Dengine="${{ github.event.inputs.engine_type || 'selenium' }}" \
+              -Dengine.type="${{ github.event.inputs.engine_type || 'selenium' }}" \
+              -Dbrowser="${{ github.event.inputs.browser || 'chrome' }}" \
+              -Dcucumber.filter.tags="${{ github.event.inputs.tags }}" \
+              -Dai.provider="${{ github.event.inputs.ai_provider || 'gemini' }}" \
+              -Dai.gemini.api.key="${{ github.event.inputs.gemini_api_key || secrets.GEMINI_API_KEY }}" \
+              -Dai.openai.api.key="${{ github.event.inputs.openai_api_key || secrets.OPENAI_API_KEY }}" \
+              -Denv="${{ github.event.inputs.environment || 'qa' }}" \
+              -Dheadless="${{ github.event.inputs.headless || 'true' }}" \
+              -Dthread.count="${{ github.event.inputs.thread_count || '2' }}" \
+              -Dretry.count="${{ github.event.inputs.retry_count || '1' }}" \
+              -Dexecution.mode=local \
+              -Dai.telemetry.url="${{ github.event.inputs.telemetry_url || secrets.PLATFORM_TELEMETRY_URL || 'HealQA Enterprise Automation Pipeline' }}"
+          fi
 
       - name: Archive Test Execution Reports
         if: always()
@@ -94,4 +133,7 @@ jobs:
             target/surefire-reports/
             target/cucumber-reports/
             target/screenshots/
+            target/videos/
+            target/element-healing-history.json
+            target/ai-dashboard/
           retention-days: 14
